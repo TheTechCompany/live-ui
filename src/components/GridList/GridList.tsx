@@ -5,6 +5,7 @@ import { Add } from 'grommet-icons'
 export interface GridListProps {
     items?: any[];
     onClick?: (item: any) => void;
+    renderItem?: (item: any) => JSX.Element;
 }
 
 export const GridList : React.FC<GridListProps> = (props) => {
@@ -34,7 +35,7 @@ return (<Box>
                 onClick={() => props.onClick?.(item)}
                 round="xsmall"
                 background="brand">
-                {item}
+                {props.renderItem?.(item)}
             </Box>
         ))}
 </Grid>

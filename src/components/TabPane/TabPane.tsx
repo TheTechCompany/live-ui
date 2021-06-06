@@ -19,8 +19,16 @@ export const TabPane : React.FC<TabPaneProps> = (props) => {
             <Tabs 
                 alignControls="start">
                 {props.tabs?.map((tab) => (
-                    <Tab title={tab.label}>
-                        {tab.pane}
+                    <Tab
+                        title={(
+                        <Box
+                            margin={{right: 'small'}}
+                            pad="small"
+                            background="brand"
+                            round={{corner: 'top', size: 'small'}}
+                            >
+                            {tab.label}
+                        </Box>)}>
                     </Tab>
                 ))}
             </Tabs>
