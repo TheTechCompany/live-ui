@@ -26,12 +26,14 @@ export const bfs_search = (graph: {source: string, target: string, id: string}[]
 
         let nextNode = rootPaths.find((a) => a.target === targetNode)
         if(nextNode){
-            return [...path, {id: nextNode.id, node: nextNode.target}]
+            path.push({id: nextNode.id, node: nextNode.target})
+            return path
         }else{
 
             let runs : any[] = rootPaths.map((rootPath) => {
                 if(path!.map((x) => x.node).indexOf(rootPath.target) < 0){
-                    return bfs_search(graph, rootPath.target, targetNode, [...path!, {id: rootPath.id, node: rootPath.target}])
+                    path?.push({id: rootPath.id, node: rootPath.target})
+                    return bfs_search(graph, rootPath.target, targetNode, path)
                 }
 
                 return [];
