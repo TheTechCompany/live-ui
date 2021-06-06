@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { Block } from '../../';
+import { Block } from '../../InfiniteCanvas';
 
 export interface TrayItemProps {
     model: Block;

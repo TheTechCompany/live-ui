@@ -1,5 +1,5 @@
 import React from 'react';
-import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition } from '..';
+import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition } from '../InfiniteCanvas';
 import { HMIPosition } from '../assets/hmi-spec';
 import { AbstractWidgetFactory } from '../models/abstract-widget-factory';
 

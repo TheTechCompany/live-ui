@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { throttle } from 'lodash';
 import React from 'react';
-import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../..';
+import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../../InfiniteCanvas';
 import { createLine, getHostForElement } from '../../utils';
 import { PathPoint } from './point';
 import { FlowPathSegment } from './segment';

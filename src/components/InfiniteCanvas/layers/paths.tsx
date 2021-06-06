@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { bfs_search, createLine, getHostForElement } from '../utils';
 import { HMILink } from '../assets/hmi-spec';
 import { InfiniteCanvasContext } from '../context/context';
-import { InfiniteCanvasPosition } from '..';
+import { InfiniteCanvasPosition } from '../InfiniteCanvas';
 import { FlowPath } from '../defaults/path';
 
 export interface PathLayerProps {

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import styled from 'styled-components'
-import { InfiniteCanvasPosition } from '../..';
+import { InfiniteCanvasPosition } from '../../InfiniteCanvas';
 import { createLine } from '../../utils';
 
 export interface FlowPathSegmentProps {
