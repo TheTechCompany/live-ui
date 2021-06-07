@@ -5,6 +5,7 @@ import { Add } from 'grommet-icons'
 export interface GridListProps {
     items?: any[];
     onClick?: (item: any) => void;
+    onCreate?: () => void;
     renderItem?: (item: any) => JSX.Element;
 }
 
@@ -18,7 +19,9 @@ return (<Box>
         count: 6,
         size: 'auto'
     }}>
+        {props.onCreate && (
         <Box
+            background="light-2"
             style={{cursor: 'pointer'}}
             round="xsmall"
             border={{
@@ -29,7 +32,7 @@ return (<Box>
             justify="center"
             align="center">
             <Add />
-        </Box>
+        </Box>)}
         {props.items?.map((item) => (
             <Box
                 onClick={() => props.onClick?.(item)}
