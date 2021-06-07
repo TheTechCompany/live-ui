@@ -13,7 +13,7 @@ const Template: Story<TabPaneProps> = (args) => <TabPane {...args} />;
 export const FewTabs = Template.bind({});
 FewTabs.args = {
   tabs: [
-    {label: "Main menu"},
+    {label: "Main menu", pane: (<div> Main</div>)},
     {label: "Backups"}
   ]
 };
