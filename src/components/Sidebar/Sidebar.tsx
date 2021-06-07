@@ -30,11 +30,13 @@ export const Sidebar : React.FC<SidebarProps> = (props) => {
             <Nav gap="small">
                 {props.menu.map((item) => (
                     <Button 
+                        alignSelf={props.expanded ? 'start':  'center'}
+                        style={{paddingBottom: 8, paddingTop: 8, border: 'none', borderRadius: 0}}
+                        size="medium"
                         onClick={() => props.onClick?.(item)}
                         icon={item.icon}
+                        label={props.expanded && item.label}
                         hoverIndicator>
-                        {props.expanded && item.label}
-
                     </Button>
                 ))}
             </Nav>
