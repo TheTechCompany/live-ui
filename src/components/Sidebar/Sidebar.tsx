@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Sidebar as GrommerSidebar, Nav, Button } from 'grommet'
+import { Sidebar as GrommerSidebar, Box, Nav, Button } from 'grommet'
 
 export interface SidebarProps {
     menu: {icon?: any, label?: string}[]
@@ -9,12 +9,15 @@ export interface SidebarProps {
 
 export const Sidebar : React.FC<SidebarProps> = (props) => {
     return (
+        <Box 
+            flex
+            direction="column"
+            style={{transition: 'width 400ms ease-out', overflow: 'hidden', width: `${props.expanded ? '200px' : '50px'}`}}>
         <GrommerSidebar
+            flex
             margin="none"
             background="brand"
             pad="none"
-            style={{transition: 'width 250ms ease-in'}}
-            width={{width: `${props.expanded ? '200px' : '50px'}`}}
             round={{
                 "corner": "right",
                 size: 'small'
@@ -30,5 +33,6 @@ export const Sidebar : React.FC<SidebarProps> = (props) => {
                 ))}
             </Nav>
         </GrommerSidebar>
+        </Box>
     )
 }
