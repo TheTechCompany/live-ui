@@ -18,7 +18,7 @@ export const Header : React.FC<HeaderProps> = (props) => {
             background="brand">
             {props.action && (
                 <Button icon={props.action} onClick={props.onActionClick}/>)}
-            <Heading level='4'>{props.title}</Heading>
+            <Heading margin="small" level='4'>{props.title}</Heading>
             {props.children}
         </GrommetHeader>
     )
