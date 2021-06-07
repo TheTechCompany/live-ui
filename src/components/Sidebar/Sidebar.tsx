@@ -10,9 +10,13 @@ export interface SidebarProps {
 export const Sidebar : React.FC<SidebarProps> = (props) => {
     return (
         <Box 
-            flex
             direction="column"
-            style={{transition: 'width 400ms ease-out', overflow: 'hidden', width: `${props.expanded ? '200px' : '50px'}`}}>
+            style={{
+                height: '100%',
+                transition: 'width 400ms ease-out', 
+                overflow: 'hidden', 
+                width: `${props.expanded ? '200px' : '50px'}`
+            }}>
         <GrommerSidebar
             flex
             margin="none"
