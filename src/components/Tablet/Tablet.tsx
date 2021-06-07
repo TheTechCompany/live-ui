@@ -51,16 +51,21 @@ export const Tablet : React.FC<TabletProps> = (props) => {
             !props.noDrawer && 
                 <Box 
                     elevation="small"
+                    direction="column"
                     style={{
                         transition: transition,
-                        opacity: selected > -1 ? 1 : 0
+                        opacity: selected > -1 ? 1 : 0,
                     }}
                     width={selected > -1 ? `200px` : `0px`}>
-                    {!props.noDrawer ? (selected > -1 && props.menu?.[selected].pane) : null}
+                    <Box 
+                        overflow={{vertical: 'auto'}}
+                        flex>
+                        {!props.noDrawer ? (selected > -1 && props.menu?.[selected].pane) : null}
+                    </Box>
                 </Box>,
             <Sidebar
-            round="small"
-            background="brand">
+                round="small"
+                background="brand">
                 <Nav gap="small">
                     {props.menu?.map((menu_item, menu_ix) => (
                         <Button 
@@ -85,7 +90,6 @@ export const Tablet : React.FC<TabletProps> = (props) => {
                 {props.noDrawer ? (selected > -1 && props.menu?.[selected].pane) : props.children }
             </Box>
             {props.direction != 'left' && renderNav()}
-          
         </Box>
     )
 }
