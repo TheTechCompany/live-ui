@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, TextInput, Button } from 'grommet'
+import { Box, Heading, TextInput, Button } from 'grommet'
 
 export interface AuthAttempt {
     username?: string;
@@ -13,6 +13,7 @@ export interface AuthResult {
 }
 
 export interface LoginFormProps {
+    title?: string;
     onSubmit?: (attempt: AuthAttempt) => AuthResult
 }
 
@@ -29,7 +30,9 @@ export const LoginForm: React.FC<LoginFormProps> = (props) => {
             background="light-1"
             elevation="1"
             pad="medium"
+            gap="medium"
         >
+            {props.title && <Heading level='3'>{props.title}</Heading>}
             <TextInput 
                 value={authAttempt.username}
                 onChange={(e) => setAuth({...authAttempt, username: e.target.value})}
@@ -39,9 +42,13 @@ export const LoginForm: React.FC<LoginFormProps> = (props) => {
                 value={authAttempt.password}
                 onChange={(e) => setAuth({...authAttempt, password: e.target.value})}
                 placeholder="Password" />
-            <Button
-                onClick={onSubmit}
-                label="Login" />
+            <Box
+                direction="row"
+                justify="end">
+                <Button
+                    onClick={onSubmit}
+                    label="Login" />
+            </Box>
         </Box>
     )
 }
