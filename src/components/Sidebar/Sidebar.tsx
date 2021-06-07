@@ -4,6 +4,7 @@ import { Sidebar as GrommerSidebar, Box, Nav, Button } from 'grommet'
 
 export interface SidebarProps {
     menu: {icon?: any, label?: string}[]
+    onClick?: (item?: any) => void;
     expanded?: boolean;
 }
 
@@ -29,6 +30,7 @@ export const Sidebar : React.FC<SidebarProps> = (props) => {
             <Nav gap="small">
                 {props.menu.map((item) => (
                     <Button 
+                        onClick={() => props.onClick?.(item)}
                         icon={item.icon}
                         hoverIndicator>
                         {props.expanded && item.label}
