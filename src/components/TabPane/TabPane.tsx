@@ -52,7 +52,11 @@ export const TabPane : React.FC<TabPaneProps> = (props) => {
                     </Tab>
                 ))}
             </Tabs>
-            {props.tabs?.[selected]?.pane}
+            <Box 
+                background="light-1"
+                flex>
+                {props.tabs?.[selected]?.pane}
+            </Box>
         </Box>
     )
 }
