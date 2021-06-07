@@ -21,6 +21,7 @@ return (<Box>
     }}>
         {props.onCreate && (
         <Box
+            onClick={props.onCreate}
             background="light-2"
             style={{cursor: 'pointer'}}
             round="xsmall"
