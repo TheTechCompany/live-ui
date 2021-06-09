@@ -2,7 +2,7 @@ import { Header as GrommetHeader, Button, BoxProps, Heading } from 'grommet'
 import React from 'react'
 
 export interface HeaderProps {
-    title?: string;
+    title?: any;
     action?: any;
     onActionClick?: () => void;
 
@@ -18,7 +18,7 @@ export const Header : React.FC<HeaderProps> = (props) => {
             background="brand">
             {props.action && (
                 <Button icon={props.action} onClick={props.onActionClick}/>)}
-            <Heading margin="small" level='4'>{props.title}</Heading>
+            {props.title}
             {props.children}
         </GrommetHeader>
     )
