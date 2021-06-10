@@ -5,7 +5,7 @@ import { Box } from 'grommet'
 import styled from 'styled-components'
 //import MarkerIcon from './marker-icon.png'
 
-import 'leaflet/dist/leaflet.css'
+//import 'leaflet/dist/leaflet.css'
 
 //const MarkerSvg = new Icon({iconUrl: MarkerIcon})
 
