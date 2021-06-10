@@ -13,11 +13,6 @@ export default {
   external: ['react', 'react-dom', ...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
   output: [
     {
-      file: `./${pkg.module}`,
-      format: 'es',
-      sourcemap: true,
-    },
-    {
       file: `./${pkg.main}`,
       format: 'cjs',
       sourcemap: true,
