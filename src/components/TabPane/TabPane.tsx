@@ -14,7 +14,7 @@ export interface TabPaneProps {
     selected?: number;
     onChange?:( ix: number ) => void;
     rightAction?: any;
-
+    onRightAction?: any;
 }
 
 export const TabPane : React.FC<TabPaneProps> = (props) => {
@@ -56,7 +56,7 @@ export const TabPane : React.FC<TabPaneProps> = (props) => {
                     </Tab>
                 ))}
             </Tabs>
-           {props.rightAction && <Button icon={props.rightAction} />}
+           {props.rightAction && <Button onClick={props.onRightAction} icon={props.rightAction} />}
             </Box>
             <Box 
                 background="light-1"
