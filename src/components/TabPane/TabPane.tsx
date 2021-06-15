@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Tabs, Tab } from 'grommet'
 import { Paper } from '../Paper';
+import styled from 'styled-components';
 
 export interface TabItem {
     label?: string;
@@ -15,9 +16,11 @@ export interface TabPaneProps {
     onChange?:( ix: number ) => void;
     rightAction?: any;
     onRightAction?: any;
+
+    className?: string;
 }
 
-export const TabPane : React.FC<TabPaneProps> = (props) => {
+export const BaseTabPane : React.FC<TabPaneProps> = (props) => {
     const [ selected, setSelected ] = useState<number>(0);
     
     useEffect(() => {
@@ -35,18 +38,19 @@ export const TabPane : React.FC<TabPaneProps> = (props) => {
     }
 
     return (
-        <Paper >
+        <Paper className={props.className} >
             <Box
                 direction="row"
                 justify="between">
             <Tabs 
+                activeIndex={selected}
                 onActive={(ix) => onChange(ix)}
                 alignControls="start">
-                {props.tabs?.map((tab) => (
+                {props.tabs?.map((tab, ix) => (
                     <Tab
+                        className={`tab-pane__tab ${selected == ix ? 'active': ''}`}
                         title={(
                         <Box
-                            margin={{right: 'small'}}
                             pad="small"
                             background="brand"
                             round={{corner: 'top', size: 'small'}}
@@ -66,3 +70,14 @@ export const TabPane : React.FC<TabPaneProps> = (props) => {
         </Paper>
     )
 }
+
+export const TabPane = styled(BaseTabPane)`
+
+    .tab-pane__tab{
+        margin-right: 6px;
+
+    }
+    .tab-pane__tab:not(.active){
+        opacity: 0.8;
+    }
+`
