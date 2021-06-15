@@ -63,7 +63,8 @@ export const BasePort : React.FC<BasePortProps> = (props) => {
 
     useEffect(() => {
         if(position && !isEqual(position, lastPosition) && props.handleId && ref.current){
-            let bounds = ref.current.getBoundingClientRect()
+            let bounds = ref.current.getBoundingClientRect() || {x: 0, y: 0, width: 0, height: 0}
+            
             reportPosition?.({nodeId: nodeId, handleId: props.handleId, position: {
                 x: bounds?.x, 
                 y: bounds?.y,
