@@ -67,6 +67,22 @@ Controlled.args = {
       type: 'action-node',
       x: 20,
       y: 20
+    },
+    {
+      id: '2',
+      type: 'action-node',
+      x: 20,
+      y: 100
+    }
+  ],
+  paths: [
+    {
+      id: '2',
+      points: [{x: 100, y: 70}, {x: 100, y: 100}],
+      source: '1',
+      sourceHandle: 'Output',
+      target: '2',
+      targetHandle: 'Input'
     }
   ]
 };

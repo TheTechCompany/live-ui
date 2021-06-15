@@ -107,12 +107,6 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = (props) => {
 
 
     useEffect(() => {
-        if(!isEqual(paths, props.paths)){
-            props.onPathsChanged?.(paths)
-        }
-    }, [paths])
-
-    useEffect(() => {
         if(props.paths){
 
             dispatch({type: actions.SET_PATHS, data: {paths: props.paths}})

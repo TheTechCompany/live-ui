@@ -39,6 +39,7 @@ export const BaseFlowPath : React.FC<FlowPathProps> = (props) => {
             y: e.clientY
         })
     }
+    
     console.log(props.path)
 
     const generateHandles = (points: InfiniteCanvasPosition[], render: (point: InfiniteCanvasPosition, ix: number) => JSX.Element) => {
