@@ -1,5 +1,5 @@
 import { off } from 'process';
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { createRef, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import styled from 'styled-components'
 import { isEqual, throttle, update } from 'lodash'
 import { PortWidget } from './components/ports'
@@ -18,6 +18,7 @@ import { AbstractWidgetFactory } from './models/abstract-widget-factory';
 
 import { reducer } from './store';
 import * as actions from './store/actions'
+import { moveNode } from './utils/canvas';
 
 export {
     AbstractWidgetFactory,
@@ -104,11 +105,6 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = (props) => {
 
     const [ {nodes, paths}, dispatch ] = useReducer(reducer, initialState)
 
-    useEffect(() => {
-        if(!isEqual(nodes, props.nodes)){
-            props.onNodesChanged?.(nodes)
-        }
-    }, [nodes])
 
     useEffect(() => {
         if(!isEqual(paths, props.paths)){
@@ -142,6 +138,10 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = (props) => {
     }, [props.factories])
 
     const canvasRef = useRef<HTMLDivElement>(null)
+
+    const canvasBounds = useMemo(() => {
+        return canvasRef.current?.getBoundingClientRect()
+    }, [canvasRef])
 
     const [lastPosition, setLastPosition] = useState<{ x: number, y: number }>({
         x: 0,
@@ -238,19 +238,25 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = (props) => {
         }
     }
 
-    const moveNode = (node: string, position: InfiniteCanvasPosition) => {
+    const _moveNode = (node: string, position: InfiniteCanvasPosition) => {
    
+        console.log(position, canvasRef, canvasBounds)
         let pos = getRelativeCanvasPos(position.x, position.y)
 
         if(props.editable && pos){
           
-            dispatch({type: actions.MOVE_NODE, data: {
+            console.log(pos)
+            let nodes = moveNode(props.nodes || [], node, pos)
+            props.onNodesChanged?.(nodes)
+
+         /* dispatch({type: actions.MOVE_NODE, data: {
                 id: node,
                 d: {
                     x: pos.x,
                     y: pos.y
                 }
-            }})
+            }})*/
+
       //      dispatch({type: actions.SET_NODES, data: {nodes: n}})
             
         }
@@ -267,6 +273,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = (props) => {
     }
 
     const getRelativeCanvasPos = (x: number, y: number) => {
+      //  console.log(canvasRef.current)
         if(canvasRef.current){
             let position = getRelativePos(x, y)
 
@@ -429,7 +436,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = (props) => {
             value={{
                 editable: props.editable,
                 factories: factories,
-                nodes: nodes,
+                nodes: props.nodes,
                 paths: paths,
                 assets: props.assets,
                 nodeRefs,
@@ -446,7 +453,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = (props) => {
                 linkPath,
                 setNodeRefs,
                 dragPort: dragPort,
-                moveNode: throttle(moveNode, 100),
+                moveNode: throttle((node, pos) => _moveNode(node, pos), 100),
                 reportPosition: reportPortPosition,
                 selectNode: () => console.log("SELECT"),
                 changeZoom: (z) => setZoom(zoom + (z))
