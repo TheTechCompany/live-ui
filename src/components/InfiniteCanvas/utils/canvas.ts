@@ -18,6 +18,8 @@ export const moveNode = (nodes: any[], id: string, pos: {x: number, y: number}) 
     return n;
 }
 
+
+
 /*
 case actions.MOVE_NODE:
     n = state.nodes.slice()

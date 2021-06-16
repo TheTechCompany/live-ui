@@ -4,6 +4,9 @@ import { HMIPosition } from '../assets/hmi-spec';
 import { AbstractWidgetFactory } from '../models/abstract-widget-factory';
 
 export interface IInfiniteCanvasContext {
+    snapToGrid?: boolean;
+    grid?: {width: number, height: number};
+    
     editable?: boolean;
     nodes?: InfiniteCanvasNode[]
 

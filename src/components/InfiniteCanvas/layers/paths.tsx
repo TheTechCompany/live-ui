@@ -1,9 +1,9 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components'
 import { bfs_search, createLine, getHostForElement } from '../utils';
 import { HMILink } from '../assets/hmi-spec';
 import { InfiniteCanvasContext } from '../context/context';
-import { InfiniteCanvasPosition } from '../InfiniteCanvas';
+import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../InfiniteCanvas';
 import { FlowPath } from '../defaults/path';
 
 export interface PathLayerProps {
@@ -16,14 +16,52 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
     const zoom = context.zoom;
     const offset = context.offset
     
-    const paths = useMemo(() => {
-        return (context.paths || []).map((x) => {
-            return {
-                ...x,
-                id: x.id
-            }
-        })
-    }, [context.paths])
+    const [ paths, setPaths ] = useState<InfiniteCanvasPath[]>([])
+    
+
+
+    useEffect(() => {
+        if(context.paths && context.nodes){
+            let p = context.paths.map((x) => {
+                let points = x.points || [];
+            
+                if(x.sourceHandle){
+                    let node = context.nodes?.find((a) => a.id == x.source)
+                    let port = node?.ports?.find((a) => a.name == x.sourceHandle)
+
+                    if(port && node){
+
+                        
+                        let point = {
+                            x: (node?.x || 0)+ (port?.position?.x || 0),
+                            y: (node?.y || 0) +(port?.position?.y || 0)
+                        }
+                        points = [point, ...(points || [])]
+                    }
+                 }
+
+                if(x.targetHandle){
+                    let node = context.nodes?.find((a) => a.id == x.target)
+                    let port = node?.ports?.find((a) => a.name == x.targetHandle)
+                    if(port && node){
+                        let point = {
+                            x: (node?.x || 0)+ (port?.position?.x || 0),
+                            y: (node?.y || 0) +(port?.position?.y || 0)
+                        }
+                        points = [...(points || []), point]
+                    }
+                }
+                return {
+                    ...x,
+                    points: points,
+                    id: x.id,
+                    
+                }
+            })
+
+            setPaths(p)
+        }
+    }, [context.paths, context.nodes])
 
 
     const runs = [
@@ -138,7 +176,7 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
     }
 
     const updatePoint = (path_id: string, ix: number, pos: InfiniteCanvasPosition) => {
-        context.updatePathPoint?.(path_id, ix, pos)
+        context.updatePathPoint?.(path_id, ix - 1, pos)
     }
 
     const linkPath = (path_id: string, nodeId: string, handleId: string) => {

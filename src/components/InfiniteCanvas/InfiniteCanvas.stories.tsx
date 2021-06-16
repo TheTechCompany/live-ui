@@ -59,14 +59,16 @@ Uncontrolled.args = {
 
 export const Controlled = ControlledTemplate.bind({});
 Controlled.args = {
+  grid: {width: 100, height: 100},
+  snapToGrid: true,
   editable: true,
   factories: [new ActionNodeFactory()],
   nodes: [
     {
       id: '1',
       type: 'action-node',
-      x: 20,
-      y: 20
+      x: 371,
+      y: 173
     },
     {
       id: '2',
@@ -78,7 +80,7 @@ Controlled.args = {
   paths: [
     {
       id: '2',
-      points: [{x: 100, y: 70}, {x: 100, y: 100}],
+      points: [{x: 100, y: 70}],
       source: '1',
       sourceHandle: 'Output',
       target: '2',

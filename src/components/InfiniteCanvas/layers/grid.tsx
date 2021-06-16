@@ -6,7 +6,13 @@ export interface GridLayerProps {
 
 export const GridLayer: React.FC<GridLayerProps> = (props) => {
 
-    const context = useContext(InfiniteCanvasContext)
+    const {
+        zoom, 
+        offset, 
+        darkMode,
+        snapToGrid,
+        grid
+    } = useContext(InfiniteCanvasContext)
 
     const lineColor =  {
         dark: "#131c20",
@@ -17,11 +23,6 @@ export const GridLayer: React.FC<GridLayerProps> = (props) => {
         dark: 'rgb(42, 42, 42)',
         light: 'white'
     }
-
-    const zoom = context.zoom;
-    const offset = context.offset
-    const darkMode = context.darkMode
-
     
 
     const backgroundColor = darkMode ? bgColor.dark : bgColor.light
@@ -43,7 +44,7 @@ export const GridLayer: React.FC<GridLayerProps> = (props) => {
      
      
         for (var i = 0; i < 10; i++) {
-            vert.push(<line stroke={lineColors} x1={`${i * 10}`} x2={`${i * 10}`} y1="0.5" y2="99.5" />)
+            vert.push(<line stroke={lineColors} x1={`${i *  10}`} x2={`${i * 10}`} y1="0.5" y2="99.5" />)
         }
         return vert;
     }
@@ -60,8 +61,8 @@ export const GridLayer: React.FC<GridLayerProps> = (props) => {
     return (
         <svg ref={svgRef} style={{flex: 1, backgroundColor: backgroundColor}}>
             <defs>
-                <pattern patternUnits="userSpaceOnUse" width="100" height="100" viewBox="0 0 100 100" id="cells">
-                    <rect x="0" y="0" width="100" height="100" fill="none" style={{strokeWidth: 2, stroke: lineColors}}></rect>
+                <pattern patternUnits="userSpaceOnUse" width={grid?.width || "100"} height={grid?.height || "100"} viewBox="0 0 100 100" id="cells">
+                    <rect x="0" y="0" width={grid?.width || "100"} height={grid?.height || "100"} fill="none" style={{strokeWidth: 2, stroke: lineColors}}></rect>
                     {renderHorizontal()}
                     {renderVertical()}
                 </pattern>

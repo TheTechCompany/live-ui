@@ -62,20 +62,27 @@ export function reducer(state : StoreState = {nodes: [], paths: []}, action : {t
             nIx = state.nodes.map((x) => x.id).indexOf(action.data.nodeId)
             
             //TODO add port reporting for controller nodes
-            /*let ports : any = n[nIx]?.ports || {}
+            let ports : any = n[nIx]?.ports || []
 
-            ports[action.data.handleId] = {
-                ...ports[action.data.id],
-                position: {
-                    x: action.data.position.x - n[nIx].x,
-                    y: action.data.position.y - n[nIx].y 
-                },
-                bounds: {
-                    ...action.data.position
+            console.log(n)
+
+            let port_ix = ports.map((x: any) => x.name).indexOf(action.data.handleId)
+            console.log("REPORT PORT", port_ix, action.data, ports)
+            if(port_ix > -1){
+                ports[port_ix] = {
+                    ...ports[port_ix],
+                    position: {
+                        x: action.data.position.x - n[nIx].x,
+                        y: action.data.position.y - n[nIx].y 
+                    },
+                    bounds: {
+                        ...action.data.position
+                    }
                 }
+                n[nIx].ports = ports
             }
-            n[nIx].ports = ports*/
 
+            console.log(n, nIx, n[nIx])
             return {
                 ...state,
                 nodes: n
