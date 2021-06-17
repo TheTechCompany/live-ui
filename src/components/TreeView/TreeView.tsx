@@ -15,7 +15,7 @@ export interface TreeViewProps {
     selected?: string;
     expanded?: string[]
 
-    onCreate?: (tree_selector: string) => void;
+    onCreate?: (tree_selector?: string) => void;
     onSelect?: (tree_selector: string) => void;
     onExpansion?: (expanded: string[]) => void;
 
@@ -120,6 +120,10 @@ export const BaseTreeView : React.FC<TreeViewProps> = (props) => {
             flex
             className={props.className}>
             {props.items?.map((item) => renderSubTree(item, [item.id]))}
+            {props.onCreate && 
+                <Button 
+                    onClick={() => props.onCreate?.()}
+                    label="Add" />}
         </Box>
     )
 }
