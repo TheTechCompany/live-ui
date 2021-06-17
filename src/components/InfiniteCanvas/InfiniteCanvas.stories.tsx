@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 //import useState from 'storybook-addon-state'
 import { Story, Meta, storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions'
-import {ActionNodeFactory} from './defaults/factory/factory'
 import { InfiniteCanvas, InfiniteCanvasProps, ZoomControls } from './InfiniteCanvas';
+import { ActionNodeFactory } from './story/factory';
 
 export default {
   title: 'Example/InfiniteCanvas',

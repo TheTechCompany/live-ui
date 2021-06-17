@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { InfiniteCanvasNode } from '../InfiniteCanvas';
+import { InfiniteCanvasNode } from '../types/canvas';
 import { HMINode } from '../assets/hmi-spec';
 import { getHostForElement } from '../utils';
 import { InfiniteCanvasContext } from '../context/context';
@@ -21,6 +21,7 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
     className
 }) => {
     const {
+        selected,
         factories = {},
         moveNode,
         selectNode,
@@ -163,7 +164,7 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
                         itemRefs.current[node.id] = element
                         setNodeRefs?.(itemRefs.current)
                     }}
-                    className={`node-container`} 
+                    className={`node-container ${(selected?.type == 'node' && selected.id == node.id )? 'selected': ''}`} 
                     onClick={(e) => selectNode?.(node.id)}
                     onMouseDown={(evt) => mouseDown(node.id, evt)}
                     onMouseEnter={(ev) => nodeHover(ev.currentTarget, node.id)}
@@ -207,6 +208,10 @@ export const NodeLayer = styled(BaseNodeLayer)`
     .node-container{
         position: absolute;
         cursor: pointer;
+    }
+
+    .node-container.selected{
+        border: 2px solid blue;
     }
 
     .started path, .started circle{

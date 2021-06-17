@@ -1,7 +1,7 @@
 import React, { RefObject } from 'react';
 
 import styled from 'styled-components'
-import { PortWidget } from '../..';
+import { PortWidget } from '..';
 
 export interface ActionNodeProps {
     className?: string;

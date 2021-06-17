@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import { throttle } from 'lodash';
 import React from 'react';
-import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../../InfiniteCanvas';
+import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../../types/canvas';
 import { createLine, getHostForElement } from '../../utils';
 import { PathPoint } from './point';
 import { FlowPathSegment } from './segment';
 
 export interface FlowPathProps {
     className?: string;
-
+    selected?: boolean;
     points: InfiniteCanvasPosition[]
     editable?: boolean;
     path?: InfiniteCanvasPath;
@@ -88,7 +88,7 @@ export const BaseFlowPath : React.FC<FlowPathProps> = (props) => {
     }
 
     return props.editable ? (
-        <g className={props.className}>
+        <g className={`${props.className} ${props.selected ? 'selected': ''}`}>
         
         {generateLine(props.points, (points, ix) => (
             <FlowPathSegment onMouseDown={(e) => segmentClick(ix, e)} points={points} />
@@ -101,7 +101,7 @@ export const BaseFlowPath : React.FC<FlowPathProps> = (props) => {
                 cy={location.y} />
         ))}
         </g>) : (
-            <g className={props.className}>
+            <g className={`${props.className} ${props.selected ? 'selected': ''}`}>
             <FlowPathSegment 
                 onMouseDown={(e) => segmentClick(0, e)} points={props.points} />
                 </g>
@@ -111,5 +111,9 @@ export const BaseFlowPath : React.FC<FlowPathProps> = (props) => {
 export const FlowPath = styled(BaseFlowPath)`
     &:hover .flow-path__highlight{
         stroke-opacity: 0.4;
+    }
+
+    &.selected .flow-path__highlight{
+        stroke-opacity: 0.5;
     }
 `

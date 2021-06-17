@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { bfs_search, createLine, getHostForElement } from '../utils';
 import { HMILink } from '../assets/hmi-spec';
 import { InfiniteCanvasContext } from '../context/context';
-import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../InfiniteCanvas';
+import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../types/canvas';
 import { FlowPath } from '../defaults/path';
 
 export interface PathLayerProps {
@@ -157,6 +157,8 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
         context.addPathPoint?.(path_id, ix, pos)
         e.stopPropagation()
 
+        console.log(e)
+
         let doc = getHostForElement(e.target as HTMLElement)
 
         const mouseMove = (e: MouseEvent) => {
@@ -183,6 +185,10 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
         context.linkPath?.(path_id, nodeId, handleId)
     }
 
+    const onSelect = (path_id: string) => {
+        context.selectPath?.(path_id)
+    }
+
     return (
         <svg
             style={{
@@ -196,11 +202,12 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
             }}>
                 {paths.map((path) => 
                           <FlowPath
+                            selected={context.selected?.type == 'path' && context.selected.id == path.id}
                             path={path}
                             editable={context.editable}
                             onLinked={(nodeId, handleId) => linkPath(path.id, nodeId, handleId)}
                             onPointsChanged={(ix, point) => updatePoint(path.id, ix, point)}
-                            onMouseDown={(ix, e, position) => addPoint(path.id, ix, e, position)}
+                            onMouseDown={(ix, e, position) => (e.metaKey || e.ctrlKey) ? addPoint(path.id, ix, e, position) : onSelect(path.id)}
                             points={(path.points || [])} />
                 )}
         </svg>

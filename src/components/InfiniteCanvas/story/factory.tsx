@@ -1,5 +1,5 @@
-import { AbstractWidgetFactory } from "../..";
-import { InfiniteCanvasNode } from "../../InfiniteCanvas";
+import { AbstractWidgetFactory } from "..";
+import { InfiniteCanvasNode } from "../types/canvas";
 import { ActionNodeWidget } from "./widget";
 
 export class ActionNodeFactory extends AbstractWidgetFactory{

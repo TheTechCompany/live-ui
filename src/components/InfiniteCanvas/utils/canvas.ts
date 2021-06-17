@@ -1,3 +1,7 @@
+import { Ref, RefObject } from "react"
+import { getHostForElement } from "."
+import { InfiniteCanvasPath, InfiniteCanvasPosition } from "../types/canvas"
+
 export const addNode = (nodes: any[], node: any) => {
     let n = nodes?.slice()
     n?.push(node)
@@ -18,6 +22,156 @@ export const moveNode = (nodes: any[], id: string, pos: {x: number, y: number}) 
     return n;
 }
 
+/*
+const updateOffset = throttle((x: number, y: number) => {
+    let _offset = {
+        x: offset.x - (lastPos.x - x),
+        y: offset.y - (lastPos.y - y)
+    }
+    setOffset(_offset)
+    props.onViewportChanged?.({offset: _offset, zoom})
+
+}, 100)*/
+
+export const getRelativePos = (ref: RefObject<HTMLElement>, position: {x: number, y: number}) => {
+    let box = ref?.current?.getBoundingClientRect()
+    return {
+        x: position.x - (box ? box.x : 0),
+        y: position.y - (box ? box.y : 0) 
+    }
+}
+
+export const getRelativeCanvasPos = (
+    ref: RefObject<HTMLElement>, 
+    viewport: {
+        offset: {x: number, y: number},
+        zoom: number
+    },
+    position: {x: number, y: number}
+) => {
+    if(ref.current){
+        let pos = getRelativePos(ref, position)
+
+        let scale = 100 / viewport.zoom
+
+        return {
+            x: (pos.x - viewport.offset.x) / scale,
+            y: (pos.y - viewport.offset.y) / scale 
+        }
+    }else{
+        return {
+            x: 0,
+            y: 0
+        }
+    }
+}
+
+//    let relative_point = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, point)
+//    onPathsChanged?.(p)
+
+
+export const addPathSegment = (paths : InfiniteCanvasPath[], path_id: string, segment_ix: number, point: InfiniteCanvasPosition) => {
+    let p = paths.slice()
+    let path_ix = p.map((x) => x.id).indexOf(path_id)
+
+    console.log(segment_ix)
+ 
+
+    if(!p[path_ix].target || segment_ix == 0){
+        p[path_ix].points = [point, ...p[path_ix].points]
+    }else{
+        p[path_ix].points.splice(segment_ix, 0, point)
+    }
+    
+    return p;
+
+}
+
+export const updatePathSegment = (paths: InfiniteCanvasPath[], path_id: string, ix: number, point: InfiniteCanvasPosition) => {
+
+    let p = paths.slice();
+    let path_ix = p.map((x) => x.id).indexOf(path_id)
+    p[path_ix].points[ix] = point;
+
+    return p;
+}
+
+export const linkPath = (paths: InfiniteCanvasPath[], path_id: string, nodeId: string, handleId: string) => {
+    let p = paths.slice();
+    let path_ix = p.map((x) => x.id).indexOf(path_id)
+
+    if(path_ix > -1){
+        p[path_ix].points.splice(p[path_ix].points.length -1, 1) //TODO make safe for relinking
+        p[path_ix].target = nodeId;
+        p[path_ix].targetHandle = handleId;
+    }
+
+    return p;
+}
+
+
+export const lockToGrid = (point: InfiniteCanvasPosition, snapToGrid: boolean, grid: {width: number, height: number}) => {
+    if(snapToGrid){
+        let widthMultiplier = (grid?.width || 0) / 10
+        let heightMultiplier = (grid?.height || 0) / 10
+
+        point.x = Math.floor(point.x / widthMultiplier) * widthMultiplier
+        point.y = Math.floor(point.y / heightMultiplier) * heightMultiplier
+    }
+
+    return point;
+}
+
+export const onDrag = (
+    evt: React.MouseEvent, 
+    drag_event?: (
+        event?: MouseEvent,
+        position?: {
+         x: number, 
+         y: number
+        }, 
+        lastPos?: {
+            x: number, 
+            y: number
+        },
+        finished?:boolean
+    ) => void) => {
+    let lastPos = {
+        x: evt.clientX,
+        y: evt.clientY
+    }
+
+    evt.stopPropagation()
+
+    let doc = getHostForElement(evt.target as HTMLElement)
+
+    const onMouseMove = (move_evt: MouseEvent) => {
+        drag_event?.(
+            move_evt,
+            {x: move_evt.clientX, y: move_evt.clientY},
+            lastPos,
+            false
+        )
+        lastPos = {
+            x: move_evt.clientX,
+            y: move_evt.clientY
+        }
+    }
+
+    const onMouseUp = (up_evt: MouseEvent) => {
+        drag_event?.(
+            up_evt,
+            undefined,
+            undefined,
+            true
+        )
+        doc.removeEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
+        doc.removeEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)
+
+    }
+    doc.addEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
+    doc.addEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)
+}
 
 
 /*

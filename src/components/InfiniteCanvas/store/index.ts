@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 } from 'uuid';
-import { InfiniteCanvasNode, InfiniteCanvasPath } from '../InfiniteCanvas';
+import { InfiniteCanvasNode, InfiniteCanvasPath } from '../types/canvas';
 import * as actions from './actions'
 
 export interface StoreState {

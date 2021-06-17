@@ -1,12 +1,12 @@
 import React from 'react';
-import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition } from '../InfiniteCanvas';
+import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition } from '../types/canvas';
 import { HMIPosition } from '../assets/hmi-spec';
 import { AbstractWidgetFactory } from '../models/abstract-widget-factory';
 
 export interface IInfiniteCanvasContext {
     snapToGrid?: boolean;
     grid?: {width: number, height: number};
-    
+
     editable?: boolean;
     nodes?: InfiniteCanvasNode[]
 
@@ -38,6 +38,10 @@ export interface IInfiniteCanvasContext {
     updatePathPoint?: (path_id: string, ix: number, point: InfiniteCanvasPosition) => void;
 
     selectNode?: (node: string) => void;
+    selectPath?: (path: string) => void;
+
+    selected?: {type?: "node" | "path", id?: string}
+
     moveNode?: (node: string, position: InfiniteCanvasPosition) => void;
     changeZoom?: (zoom: number) => void;
 
