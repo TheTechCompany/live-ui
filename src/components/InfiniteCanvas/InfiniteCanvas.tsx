@@ -21,6 +21,8 @@ import * as actions from './store/actions'
 import { addPathSegment, getRelativeCanvasPos, linkPath, lockToGrid, moveNode, onDrag, updatePathSegment } from './utils/canvas';
 import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition, InfinitePort } from './types/canvas';
 
+export * from './types'
+
 export {
     AbstractWidgetFactory,
     ZoomControls,
