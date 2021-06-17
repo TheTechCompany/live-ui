@@ -34,6 +34,8 @@ FewTabs.args = {
                 label: "Sub proc"
             }
         ]
-    }]
+    }],
+    onSelect: (node) => {console.log(node)},
+    onCreate: (node) => {console.log(node)}
 };
 
