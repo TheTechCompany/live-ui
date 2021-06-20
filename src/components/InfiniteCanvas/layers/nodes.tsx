@@ -33,7 +33,7 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
         setNodeRefs
     } = useContext(InfiniteCanvasContext)
 
-   
+   console.log(offset)
    /* const nodeModels = useMemo(() => {
         let models : any = {};
         nodes.forEach((x) => 
@@ -122,6 +122,8 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
         //start dragging
 
         const mouseMove = (evt: MouseEvent) => {
+            evt.stopPropagation()
+
             moveNode?.(elem, {
                 x: evt.clientX + offsetRect?.x, 
                 y: evt.clientY + offsetRect?.y
@@ -129,6 +131,7 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
         }
 
         const mouseUp = (evt: MouseEvent) => {
+            evt.stopPropagation()
             doc.removeEventListener('mousemove', mouseMove as EventListenerOrEventListenerObject)
             doc.removeEventListener('mouseup', mouseUp as EventListenerOrEventListenerObject)
         }
@@ -165,7 +168,9 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
                         setNodeRefs?.(itemRefs.current)
                     }}
                     className={`node-container ${(selected?.type == 'node' && selected.id == node.id )? 'selected': ''}`} 
-                    onClick={(e) => selectNode?.(node.id)}
+                    onClick={(e) => {
+                        selectNode?.(node.id)
+                    }}
                     onMouseDown={(evt) => mouseDown(node.id, evt)}
                     onMouseEnter={(ev) => nodeHover(ev.currentTarget, node.id)}
                     onMouseLeave={() => nodeHoverEnd()}
@@ -211,7 +216,8 @@ export const NodeLayer = styled(BaseNodeLayer)`
     }
 
     .node-container.selected{
-        border: 2px solid blue;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px 5px cyan;
     }
 
     .started path, .started circle{

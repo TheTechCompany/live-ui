@@ -10,6 +10,7 @@ import { BasePort, usePort } from './base';
 export interface PortWidgetProps {
     id?: string;
     type?: string;
+    round?: boolean;
     className?: string;
 }
 
@@ -38,6 +39,7 @@ export const PortWidget : React.FC<PortWidgetProps> = (props) => {
 
     return (
         <div 
+            className="port-base"
             onMouseDown={onMouseDown}>
             <Port
                 {...extraProps}

@@ -1,3 +1,4 @@
+import { throttle } from "lodash"
 import { Ref, RefObject } from "react"
 import { getHostForElement } from "."
 import { InfiniteCanvasPath, InfiniteCanvasPosition } from "../types/canvas"
@@ -136,6 +137,7 @@ export const onDrag = (
         },
         finished?:boolean
     ) => void) => {
+
     let lastPos = {
         x: evt.clientX,
         y: evt.clientY
@@ -145,18 +147,23 @@ export const onDrag = (
 
     let doc = getHostForElement(evt.target as HTMLElement)
 
-    const onMouseMove = (move_evt: MouseEvent) => {
+    lastPos = {
+        x: evt.clientX,
+        y: evt.clientY
+    }
+
+    const onMouseMove = throttle((move_evt: MouseEvent) => {
         drag_event?.(
             move_evt,
             {x: move_evt.clientX, y: move_evt.clientY},
-            lastPos,
+            Object.assign({}, lastPos),
             false
         )
         lastPos = {
             x: move_evt.clientX,
             y: move_evt.clientY
         }
-    }
+    }, 100) as Function;
 
     const onMouseUp = (up_evt: MouseEvent) => {
         drag_event?.(

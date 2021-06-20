@@ -20,8 +20,11 @@ import { reducer } from './store';
 import * as actions from './store/actions'
 import { addPathSegment, getRelativeCanvasPos, linkPath, lockToGrid, moveNode, onDrag, updatePathSegment } from './utils/canvas';
 import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition, InfinitePort } from './types/canvas';
+import { HMIPosition } from './assets/hmi-spec';
 
 export * from './types'
+
+export * from './components/nodes'
 
 export {
     AbstractWidgetFactory,
@@ -104,10 +107,17 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
 
     const [_zoom, setZoom] = useState<number>(100)
 
-    const [_offset, setOffset] = useState<{ x: number, y: number }>({
+    const [_offset, _setOffset] = useState<{ x: number, y: number }>({
         x: 0,
         y: 70 // REMOVE add as prop
     })
+
+    const offsetRef = useRef(_offset)
+
+    const setOffset = (offset: HMIPosition) => {
+        offsetRef.current = offset;
+        _setOffset(offset)
+    }
 
 
     useEffect(() => {
@@ -115,6 +125,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
             setNodes(nodes?.map((node) => {
                 let type = node.type;
                 let f : AbstractWidgetFactory = _factories[type]
+                console.log(type, f)
                 return f.parseModel(node)
             }) as any)
         }
@@ -135,7 +146,8 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
 
     useEffect(() => {
         if(offset){
-            setOffset(offset)
+            console.log("Set")
+         //   setOffset(offset)
         }
     }, [offset])
 
@@ -149,15 +161,16 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         }
     }, [factories])
 
-
-    const updateOffset = throttle((position: {x: number, y: number}, lastPos: {x: number, y: number}) => {
+    const updateOffset = (position: {x: number, y: number}, lastPos: {x: number, y: number}) => {
         let new_offset = {
-            x: _offset.x - (lastPos.x - position.x),
-            y: _offset.y - (lastPos.y - position.y)
+            x: offsetRef.current.x - (lastPos.x - position.x),
+            y: offsetRef.current.y - (lastPos.y - position.y)
         }
         setOffset(new_offset)
         onViewportChanged?.({offset: new_offset, zoom: _zoom})
-    }, 100)
+    }
+
+ 
 
     const onMouseDown = (evt: React.MouseEvent) => {
         if (evt.button == 0) {
@@ -180,7 +193,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         let zoomFactor = (_zoom + zoomY) / 100;
         
         let new_zoom = _zoom + zoomY;
-        let new_offset = offset || {x: 0, y: 0};
+        let new_offset = _offset || {x: 0, y: 0};
 
         setZoom(new_zoom)
 
@@ -210,7 +223,9 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     }
 
     const _moveNode = (node: string, position: InfiniteCanvasPosition) => {
-   
+        
+        if(node) onSelect("node", node)
+
         let pos = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, position)
         pos = lockToGrid(pos, snapToGrid || false, grid)
         if(editable && pos){

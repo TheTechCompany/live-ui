@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import { Story, Meta, storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions'
 import { InfiniteCanvas, InfiniteCanvasProps, ZoomControls } from './InfiniteCanvas';
-import { ActionNodeFactory } from './story/factory';
+import { ActionNodeFactory, IconNodeFactory, StartNodeFactory } from './components/nodes';
 
 export default {
   title: 'Example/InfiniteCanvas',
@@ -41,6 +41,39 @@ const Template: Story<InfiniteCanvasProps> = (args) => <InfiniteCanvas {...args}
 
   <ZoomControls anchor={{horizontal: 'right', vertical: 'bottom'}} />
 </InfiniteCanvas>;
+
+export const NodeOptions = Template.bind({});
+NodeOptions.args = {
+  editable: true,
+  factories: [new ActionNodeFactory(), new IconNodeFactory(), new StartNodeFactory()],
+  nodes: [
+    {
+      id: '1',
+      type: 'action-node',
+      x: 20,
+      y: 20
+    },
+    {
+      id: '2',
+      type: 'icon-node',
+      extras: {
+        icon: "Next",
+        color: "purple"
+      },
+      x: 200,
+      y: 20
+    },
+    {
+      id: '3',
+      type: 'start-node',
+      extras: {
+        
+      },
+      x: 300,
+      y: 20
+    }
+  ]
+};
 
 export const Uncontrolled = Template.bind({});
 Uncontrolled.args = {
