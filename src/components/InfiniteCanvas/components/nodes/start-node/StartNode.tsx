@@ -14,7 +14,7 @@ export const BaseStartNode : React.FC<StartNodeProps> = (props) => {
             {(icon) => (
                 <>
                 {icon}
-                <PortWidget id="out" />
+                <PortWidget type="out" id="out" />
                 </>
             )}
         </BaseIconNode>

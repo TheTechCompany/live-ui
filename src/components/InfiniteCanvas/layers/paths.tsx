@@ -33,8 +33,8 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
 
                         
                         let point = {
-                            x: (node?.x || 0)+ (port?.position?.x || 0),
-                            y: (node?.y || 0) +(port?.position?.y || 0)
+                            x: (node?.x || 0) + (port?.position?.x || 0) + ((port.position?.width || 0) / 2),
+                            y: (node?.y || 0) + (port?.position?.y || 0) + ((port.position?.height || 0) /2)
                         }
                         points = [point, ...(points || [])]
                     }

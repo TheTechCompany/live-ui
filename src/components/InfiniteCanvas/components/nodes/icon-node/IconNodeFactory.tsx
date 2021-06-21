@@ -12,8 +12,20 @@ export class IconNodeFactory extends AbstractWidgetFactory {
         return (<IconNode  {...event} />)
     }
     parseModel(model: any) {
+        
         return {
-            ...model
+            ...model,
+            ports: model.ports ? model.ports : [
+                {
+                    name: "in",
+                    type: "base"
+                    
+                },
+                {
+                    name: 'out',
+                    type: 'base'
+                }
+            ]
         }
     }
 

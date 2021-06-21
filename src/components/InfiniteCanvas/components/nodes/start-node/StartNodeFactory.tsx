@@ -13,7 +13,13 @@ export class StartNodeFactory extends AbstractWidgetFactory {
     }
     parseModel(model: any) {
         return {
-            ...model
+            ...model,
+            ports: model.ports ? model.ports : [
+                {
+                    name: 'out',
+                    type: 'base'
+                }
+            ]
         }
     }
 

@@ -33,6 +33,8 @@ export const PortWidget : React.FC<PortWidgetProps> = (props) => {
 
     const onMouseDown = (e: React.MouseEvent) => {
         e.preventDefault();
+
+        console.log("DRAG", props.id)
         //let bounds = ref.current?.getBoundingClientRect();
         dragPort?.(e)
     }

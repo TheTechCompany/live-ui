@@ -41,9 +41,9 @@ export const UnstyledIconNode = (props : IconNodeProps) => {
         <BaseIconNode {...props}>
             {(icon) => (
                 <>
-                <PortWidget id="in" />
+                <PortWidget type="in" id="in" />
                 {icon}
-                <PortWidget id="out"    />
+                <PortWidget type="out" id="out"    />
                 </>
             )}
     

@@ -29,6 +29,8 @@ export interface InfinitePort {
     position?: {
         x?: number;
         y?: number;
+        width?: number;
+        height?: number;
     }
 
     bounds?: {

@@ -95,7 +95,7 @@ Controlled.args = {
   grid: {width: 100, height: 100},
   snapToGrid: true,
   editable: true,
-  factories: [new ActionNodeFactory()],
+  factories: [new ActionNodeFactory(), new IconNodeFactory()],
   nodes: [
     {
       id: '1',
@@ -108,6 +108,16 @@ Controlled.args = {
       type: 'action-node',
       x: 20,
       y: 100
+    },
+    {
+      id: '3',
+      type: 'icon-node',
+      extras: {
+        icon: "Next",
+        color: "purple"
+      },
+      x: 200,
+      y: 20
     }
   ],
   paths: [
