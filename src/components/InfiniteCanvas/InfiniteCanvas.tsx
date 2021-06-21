@@ -386,15 +386,15 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                 isPortDragging,
                 addPathPoint: (id, ix, point) => {
                     let rp = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, point)
-                    onPathsChanged?.(addPathSegment(_paths.current, id, ix, rp))
+                    onPathsChanged?.(addPathSegment(_paths.current.slice(), id, ix, rp))
                 },
                 updatePathPoint: (id, ix, point) => {
                     let rp = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, point)
                     rp = lockToGrid(rp, snapToGrid, grid)
-                    onPathsChanged?.(updatePathSegment(_paths.current, id, ix, rp))
+                    onPathsChanged?.(updatePathSegment(_paths.current.slice(), id, ix, rp))
                 },
                 linkPath: (id, node, handle) => {
-                    onPathsChanged?.(linkPath(_paths.current, id, node, handle))
+                    onPathsChanged?.(linkPath(_paths.current.slice(), id, node, handle))
                 },
                 setNodeRefs,
                 dragPort: dragPort,
