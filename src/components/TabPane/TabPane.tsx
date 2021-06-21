@@ -12,6 +12,8 @@ export interface TabItem {
 export interface TabPaneProps {
     tabs?: TabItem[]
 
+    background?: string;
+
     selected?: number;
     onChange?:( ix: number ) => void;
     rightAction?: any;
@@ -38,7 +40,9 @@ export const BaseTabPane : React.FC<TabPaneProps> = (props) => {
     }
 
     return (
-        <Paper className={props.className} >
+        <Paper
+            background={props.background || "brand"}
+            className={props.className} >
             <Box
                 direction="row"
                 justify="between">
@@ -52,7 +56,7 @@ export const BaseTabPane : React.FC<TabPaneProps> = (props) => {
                         title={(
                         <Box
                             pad="small"
-                            background="brand"
+                            background={selected == ix ? 'light-1' : "light-1"}
                             round={{corner: 'top', size: 'small'}}
                             >
                             {tab.label}
@@ -75,9 +79,19 @@ export const TabPane = styled(BaseTabPane)`
 
     .tab-pane__tab{
         margin-right: 6px;
+    }
 
+    .tab-pane__tab > div {
+        margin-bottom: 0px;
+        clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+        border: none;
+    }
+
+    .tab-pane__tab > div > div {
+        padding-left: 12px;
+        padding-right: 12px;
     }
     .tab-pane__tab:not(.active){
-        opacity: 0.8;
+        opacity: 0.55;
     }
 `
