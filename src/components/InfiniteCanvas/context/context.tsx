@@ -5,7 +5,7 @@ import { AbstractWidgetFactory } from '../models/abstract-widget-factory';
 
 export interface IInfiniteCanvasContext {
     snapToGrid?: boolean;
-    grid?: {width: number, height: number};
+    grid?: {width: number, height: number, divisions: number};
 
     editable?: boolean;
     nodes?: InfiniteCanvasNode[]

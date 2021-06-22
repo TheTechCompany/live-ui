@@ -4,6 +4,8 @@ import { InfiniteCanvasContext } from '../context/context';
 export interface GridLayerProps {
 }
 
+const DIVISION = 3;
+
 export const GridLayer: React.FC<GridLayerProps> = (props) => {
 
     const {
@@ -32,9 +34,9 @@ export const GridLayer: React.FC<GridLayerProps> = (props) => {
 
     const renderHorizontal = () => {
         let horiz = []
-     
-        for (var i = 0; i < 10; i++) {
-            horiz.push(<line stroke={lineColors} x1='0.5' x2="99.5" y1={`${i * 10}`} y2={`${i * 10}`} />)
+        const w = (grid || {width: 100}).width / (grid?.divisions || 10)
+        for (var i = 0; i < (grid?.divisions || 10); i++) {
+            horiz.push(<line stroke={lineColors} x1='0.5' x2="99.5" y1={`${i * w}`} y2={`${i * w}`} />)
         }
         return horiz;
     }
@@ -42,9 +44,10 @@ export const GridLayer: React.FC<GridLayerProps> = (props) => {
     const renderVertical = () => {
         let vert = [];
      
-     
-        for (var i = 0; i < 10; i++) {
-            vert.push(<line stroke={lineColors} x1={`${i *  10}`} x2={`${i * 10}`} y1="0.5" y2="99.5" />)
+        const h = (grid || {height: 100}).height / (grid?.divisions || 10)
+
+        for (var i = 0; i < (grid?.divisions || 10); i++) {
+            vert.push(<line stroke={lineColors} x1={`${i *  h}`} x2={`${i * h}`} y1="0.5" y2="99.5" />)
         }
         return vert;
     }

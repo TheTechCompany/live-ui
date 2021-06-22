@@ -59,7 +59,7 @@ export interface InfiniteCanvasProps {
     factories?: Array<AbstractWidgetFactory>;
 
     snapToGrid?: boolean;
-    grid?: {width: number, height: number}
+    grid?: {width: number, height: number, divisions: number}
 
     offset?: {
         x: number
@@ -87,7 +87,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     editable,
     className,
     snapToGrid = false,
-    grid = {width: 100, height: 100},
+    grid = {width: 100, height: 100, divisions: 3},
     children
 }) => {
 
@@ -371,7 +371,9 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         <InfiniteCanvasContext.Provider
             value={{
                 snapToGrid: snapToGrid,
-                grid: grid,
+                grid: {
+                    ...grid
+                },
                 editable: editable,
                 
                 factories: _factories,
