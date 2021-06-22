@@ -13,6 +13,10 @@ const Template: Story<TreeViewProps> = (args) => <TreeView {...args} />;
 export const FewTabs = Template.bind({});
 FewTabs.args = {
     items: [{
+    id: 'root',
+    label: "Project",
+
+    items: [{
         id: 'uf-plant',
         label: "UF Plant",
         items: [
@@ -34,7 +38,8 @@ FewTabs.args = {
                 label: "Sub proc"
             }
         ]
-    }],
+    }]
+}],
     onSelect: (node) => {console.log(node)},
     onCreate: (node) => {console.log(node)}
 };

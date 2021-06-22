@@ -71,8 +71,11 @@ export const BaseTreeView : React.FC<TreeViewProps> = (props) => {
         return (
             <Box 
                 direction="column">
-                <Box   
+                <Box  
+                    background={base.join('.') == selected ? 'rgba(129,252,237, 0.4)' : 'none'} 
                     flex
+                    border={base.join('.') == selected ? {side: 'all', size: 'small', color: 'accent-3'} : {side:'left', size: 'small'}}
+
                     pad={{vertical: 'small'}}
                     className="tree-item__row"
                     direction="row"
@@ -84,13 +87,16 @@ export const BaseTreeView : React.FC<TreeViewProps> = (props) => {
                             size="small"
                             onClick={() => toggleExpansion(tree.id)}
                             icon={isSelected(tree.id) ? <Icons.Down size='small' /> : <Icons.Next size='small' />} />
-                    ) : <Box width="20px" />} 
+                    ) : 
                     <Box 
-                        background={base.join('.') == selected ? 'light-4' : 'none'}
+                        width="20px" />} 
+                    <Box 
+                        focusIndicator={false}
+                        background={'none'}
                         onClick={() => toggleSelect(base.join('.'))}
                         flex
                         style={{cursor: 'pointer'}}>
-                        <Text>
+                        <Text alignSelf="start">
                             {tree.label}
                         </Text>
                     </Box>
@@ -106,6 +112,7 @@ export const BaseTreeView : React.FC<TreeViewProps> = (props) => {
                     direction="vertical"
                     open={isSelected(tree.id)}>
                     <Box
+                        border={{side:'left', size: 'small'}}
                         pad={{left: '20px'}}
                         direction="column">
                         {tree.items && tree.items.length > 0 && tree.items.map((item) => renderSubTree(item, [...base, item.id]))}
