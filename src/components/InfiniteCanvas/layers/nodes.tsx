@@ -5,6 +5,7 @@ import { HMINode } from '../assets/hmi-spec';
 import { getHostForElement } from '../utils';
 import { InfiniteCanvasContext } from '../context/context';
 import { NodeIdContext } from '../context/nodeid';
+import { Box } from 'grommet';
 
 export interface NodeLayerProps {
     className?: string;
@@ -180,6 +181,20 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
                         top: node.y,
                         transform: getDirection(node.direction)
                     }}>
+                    {selected?.type == 'node' && selected.id == node.id && node.menu && (
+                        <Box 
+                            onMouseDown={(e) => e.stopPropagation()}
+                            flex
+                            round="xsmall"
+                            className="menu-dialog" 
+                            style={{position: 'absolute', left: '100%', minWidth: 150, minHeight: 50}} background="light-1">
+                            <Box
+                                gap="xsmall"
+                                pad="xsmall">
+                                {node.menu}
+                            </Box>
+                        </Box>
+                    )}
                     <NodeIdContext.Provider value={{
                         nodeId: node.id,
                         position: {
@@ -210,15 +225,28 @@ export const NodeLayer = styled(BaseNodeLayer)`
         padding: 8px;
     }
 
+    .menu-dialog{
+        margin-left: 10px;
+    }
+
+    .menu-dialog:before{
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -10px;
+        width: 0;
+        height: 0;
+        border-top: 5px solid transparent;
+        border-right: 10px solid white;
+        border-bottom: 5px solid transparent;
+    }
+
     .node-container{
         position: absolute;
         cursor: pointer;
     }
 
-    .node-container.selected{
-        border-radius: 5px;
-        box-shadow: 0px 0px 10px 5px cyan;
-    }
+   
 
     .started path, .started circle{
         stroke: green;

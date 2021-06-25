@@ -53,9 +53,11 @@ export interface InfiniteCanvasProps {
 
     onNodesChanged?: (nodes: InfiniteCanvasNode[]) => void;
     onPathsChanged?: (paths: InfiniteCanvasPath[]) => void;
+
     assets?: {
         [key: string]: JSX.Element
     }
+    
     factories?: Array<AbstractWidgetFactory>;
 
     snapToGrid?: boolean;

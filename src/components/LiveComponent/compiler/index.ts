@@ -6,16 +6,20 @@ const TypescriptPreset = require('@babel/preset-typescript')
 
 export const compileComponent = (code: string) : string | undefined => {
     console.time("Compiling..s.")
-    const result = transform(code, {
-        filename: 'component.tsx',
-        presets: [
-            [EnvPreset, {
-                modules: 'cjs'
-            }],
-            ReactPreset,
-            TypescriptPreset
-        ]
-    })
-    console.timeEnd("Compiling...")
-    return result.code?.toString();
+    try{
+        const result = transform(code, {
+            filename: 'component.tsx',
+            presets: [
+                [EnvPreset, {
+                    modules: 'cjs'
+                }],
+                ReactPreset,
+                TypescriptPreset
+            ]
+        })
+        console.timeEnd("Compiling...")
+        return result.code?.toString();
+    }catch(e){
+        console.error("Error compiling code", e)
+    }
 }

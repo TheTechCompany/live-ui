@@ -27,11 +27,12 @@ export const codeToComponent = (component: string) => {
     const func = new Function("require", "module", "exports", component);
     try{
        func(_requires, module, exports)
+       console.timeEnd("Compile component")
+       return module.exports;
     }catch(e){
         console.log("Error", e)
     }
-    console.timeEnd("Compile component")
-    return module.exports;
+
 }
 
 export const rawToCode = (text: string) => {
@@ -40,8 +41,8 @@ export const rawToCode = (text: string) => {
 
 export const rawToComponent = (text: string) => {
     let code = rawToCode(text)
-
-    if(code){
+    console.log(code)
+    if(code != undefined){
         return codeToComponent(code);
     }   
 }

@@ -8,15 +8,22 @@ export interface InfiniteCanvasPosition {
 export interface InfiniteCanvasNode {
     id: string;
     type: string;
+    
+    menu?: any;
+
     direction?: string;
+
     asset?: string;
     x: number;
     y: number;
     ports?: InfinitePort[];
     label?: string;
+
     width?: number;
     height?: number;
+
     value?: string;
+
     sub_components?: {
         [key: string]: InfiniteCanvasNode
     }

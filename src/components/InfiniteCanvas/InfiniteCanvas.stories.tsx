@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 //import useState from 'storybook-addon-state'
 import { Story, Meta, storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions'
+import { TextInput } from 'grommet';
 import { InfiniteCanvas, InfiniteCanvasProps, ZoomControls } from './InfiniteCanvas';
 import { ActionNodeFactory, IconNodeFactory, StartNodeFactory } from './components/nodes';
 
@@ -100,18 +101,27 @@ Controlled.args = {
     {
       id: '1',
       type: 'action-node',
+      menu: (<div>
+        <TextInput placeholder="Width" type="number" />
+        <TextInput placeholder="Height" type="number" />
+      </div>),
       x: 371,
       y: 173
     },
     {
       id: '2',
       type: 'action-node',
+      menu: (<div></div>),
       x: 20,
       y: 100
     },
     {
       id: '3',
       type: 'icon-node',
+      menu: (<div>
+        <TextInput placeholder="Width" type="number" />
+        <TextInput placeholder="Height" type="number" />
+      </div>),
       extras: {
         icon: "Next",
         color: "purple"
