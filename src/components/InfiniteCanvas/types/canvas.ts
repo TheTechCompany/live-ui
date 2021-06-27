@@ -48,6 +48,7 @@ export interface InfinitePort {
 
 export interface InfiniteCanvasPath {
     id: string;
+    menu?: any;
     source: string;
     sourceHandle?: string;
     target: string;

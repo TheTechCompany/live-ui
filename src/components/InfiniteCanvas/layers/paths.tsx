@@ -5,6 +5,7 @@ import { HMILink } from '../assets/hmi-spec';
 import { InfiniteCanvasContext } from '../context/context';
 import { InfiniteCanvasPath, InfiniteCanvasPosition } from '../types/canvas';
 import { FlowPath } from '../defaults/path';
+import { Box } from 'grommet';
 
 export interface PathLayerProps {
 }
@@ -201,6 +202,22 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
                 position: 'absolute'
             }}>
                 {paths.map((path) => 
+                (
+                    <>
+                    {context.selected?.type == 'path' && context.selected.id == path.id && path.menu && (
+                        <Box 
+                            onMouseDown={(e) => e.stopPropagation()}
+                            flex
+                            round="xsmall"
+                            className="menu-dialog" 
+                            style={{position: 'absolute', left: '100%', minHeight: 50}} background="light-1">
+                            <Box
+                                gap="xsmall"
+                                pad="xsmall">
+                                {path.menu}
+                            </Box>
+                        </Box>
+                    )}
                           <FlowPath
                             selected={context.selected?.type == 'path' && context.selected.id == path.id}
                             path={path}
@@ -209,6 +226,8 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
                             onPointsChanged={(ix, point) => updatePoint(path.id, ix, point)}
                             onMouseDown={(ix, e, position) => (e.metaKey || e.ctrlKey) ? addPoint(path.id, ix, e, position) : onSelect(path.id)}
                             points={(path.points || [])} />
+                    </>
+                )
                 )}
         </svg>
     )

@@ -200,6 +200,10 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
                         position: {
                             x: node.x,
                             y: node.y
+                        },
+                        dimensions: {
+                            width: node.width || 0,
+                            height: node.height || 0
                         }
                     }}>
                     {renderAssetBundle(node.id, node)}

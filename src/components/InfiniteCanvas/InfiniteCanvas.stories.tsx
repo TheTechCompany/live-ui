@@ -118,26 +118,33 @@ Controlled.args = {
     {
       id: '3',
       type: 'icon-node',
-      menu: (<div>
-        <TextInput placeholder="Width" type="number" />
-        <TextInput placeholder="Height" type="number" />
-      </div>),
       extras: {
+        label: "Run",
         icon: "Next",
         color: "purple"
       },
       x: 200,
+      y: 20
+    },
+    {
+      id: '5',
+      type: 'icon-node',
+      extras: {
+        icon: "Next",
+        color: "purple"
+      },
+      x: 300,
       y: 20
     }
   ],
   paths: [
     {
       id: '2',
-      points: [{x: 100, y: 70}],
+      points: [{x: 100, y: 70}, {x: 200, y: 80}],
       source: '1',
-      sourceHandle: 'Output',
+      sourceHandle: 'inlet',
       target: '2',
-      targetHandle: 'Input'
+      targetHandle: 'inlet'
     }
   ]
 };

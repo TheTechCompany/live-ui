@@ -21,6 +21,7 @@ import * as actions from './store/actions'
 import { addPathSegment, getRelativeCanvasPos, linkPath, lockToGrid, moveNode, onDrag, updatePathSegment } from './utils/canvas';
 import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition, InfinitePort } from './types/canvas';
 import { HMIPosition } from './assets/hmi-spec';
+import { ContextMenu } from './components/context-menu/ContextMenu';
 
 export * from './types'
 
@@ -93,6 +94,8 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     children
 }) => {
 
+    const [ menuPos, setMenuPos ] = useState<{x?: number, y?: number}>()
+
     const canvasRef = useRef<HTMLDivElement>(null)
 
     const [ selected, setSelected ] = useState<{type?: 'node' | 'path', id?: string}>()
@@ -134,9 +137,9 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     }, [nodes, _factories])
 
     useEffect(() => {
-        if(paths){
-            _paths.current = paths;
-        }
+     
+        _paths.current = paths || [];
+        
     }, [paths])
   
 
@@ -175,6 +178,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
  
 
     const onMouseDown = (evt: React.MouseEvent) => {
+        setMenuPos(undefined)
         if (evt.button == 0) {
             //Left
             onDrag(evt, (evt, position, lastPos, finished) => {
@@ -369,6 +373,20 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         }
     }
 
+    const onContextMenu = (e : React.MouseEvent) => {
+        e.stopPropagation()
+        e.preventDefault()
+
+        let bounds = canvasRef.current?.getBoundingClientRect()
+
+        console.log(e.clientY)
+
+        setMenuPos({
+            x: e.clientX - (bounds?.x || 0),
+            y: e.clientY - (bounds?.y || 0)
+        })
+    }
+
     return (
         <InfiniteCanvasContext.Provider
             value={{
@@ -411,6 +429,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                 changeZoom: (z) => setZoom(_zoom + (z))
             }}>
             <div
+                onContextMenu={onContextMenu}
                 ref={canvasRef}
                 onMouseDown={onMouseDown}
                 onWheel={onWheel}
@@ -418,6 +437,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                 onDrop={_onDrop}
                 className={className}
             >
+                <ContextMenu open={Boolean(menuPos != undefined)} y={menuPos?.y} x={menuPos?.x}/>
                 <GridLayer />
                 <PathLayer />
                 <NodeLayer />

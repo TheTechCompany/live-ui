@@ -20,7 +20,7 @@ export const usePort = (props : {id?: string}) => {
 
     const ref = useRef<HTMLDivElement>(null)
     const [ lastPos, setLastPos ] = useState<any>();
-    const { nodeId, position } = useContext(NodeIdContext)
+    const { nodeId, dimensions, position } = useContext(NodeIdContext)
 
     useEffect(() => {
         if(position && !isEqual(position, lastPos) && props.id && ref.current){
@@ -34,7 +34,7 @@ export const usePort = (props : {id?: string}) => {
             })
             setLastPos(position)
         }
-    }, [props.id, position])
+    }, [props.id, position, dimensions])
 
     return {
         dragPort: (e: React.MouseEvent) => {
