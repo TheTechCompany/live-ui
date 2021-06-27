@@ -325,7 +325,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
 
         let node = _nodes?.find((a) => a.id == opts.nodeId) || {x: 0, y: 0, ports: []}
         let node_ix = (_nodes?.map((x) => x.id) || []).indexOf(opts.nodeId)
-        let ports = node?.ports;
+        let ports = node?.ports?.slice();
 
         let port_ix = ports?.map((x: any) => x.name).indexOf(opts.handleId) 
         
