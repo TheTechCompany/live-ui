@@ -53,7 +53,8 @@ export const UnstyledIconNode = (props : IconNodeProps) => {
                     <PortWidget type="in" id="in" />
                     {icon}
                     {props.extras?.label && (
-                        <Box 
+                        <Box
+                            margin={{left: 'small'}} 
                             direction="row"
                             justify="center"
                             flex>
