@@ -219,6 +219,7 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
                         </Box>
                     )}
                           <FlowPath
+                            onContextMenu={(e) => context.openContextMenu?.({x: e.clientX, y: e.clientY}, {type: "path", id: path.id})}
                             selected={context.selected?.type == 'path' && context.selected.id == path.id}
                             path={path}
                             editable={context.editable}

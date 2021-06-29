@@ -9,6 +9,8 @@ export interface FlowPathSegmentProps {
     className?: string;
     points?: InfiniteCanvasPosition[],
     onMouseDown?: (e: React.MouseEvent) => void;
+    onContextMenu?: (e: React.MouseEvent) => void;
+
 }
 
 export const BaseFlowPathSegment : React.FC<FlowPathSegmentProps> = (props) => {
@@ -17,7 +19,10 @@ export const BaseFlowPathSegment : React.FC<FlowPathSegmentProps> = (props) => {
         if(props.points) return createLine(props.points)
     }, [props.d, props.points])
     return (
-        <g className={props.className} onMouseDown={props.onMouseDown}>
+        <g 
+            onContextMenu={props.onContextMenu}
+            className={props.className}
+             onMouseDown={props.onMouseDown}>
 
             <path d={d} className={"flow-path"}/>
             <path d={d} className={"flow-path__pipe-border"} />

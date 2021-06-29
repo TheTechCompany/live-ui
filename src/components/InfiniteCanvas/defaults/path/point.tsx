@@ -5,11 +5,15 @@ export interface PathPointProps {
     cy?: number;
     style?: any;
     onMouseDown?: (e: React.MouseEvent) => void;
+    onContextMenu?: (e: React.MouseEvent) => void;
 }
 
 export const PathPoint = (props: PathPointProps) => {
     return (
-        <g style={props.style} onMouseDown={props.onMouseDown}>
+        <g 
+            onContextMenu={props.onContextMenu}
+            style={props.style}
+            onMouseDown={props.onMouseDown}>
 
             <circle
                 cx={props.cx}

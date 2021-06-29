@@ -14,6 +14,7 @@ export interface FlowPathProps {
     path?: InfiniteCanvasPath;
     onLinked?: (nodeId: string, handleId: string) => void;
     onPointsChanged?: (ix: number, position: InfiniteCanvasPosition) => void;
+    onContextMenu?: (e: React.MouseEvent) => void;
     onMouseDown?: (ix: number, e: React.MouseEvent, position: InfiniteCanvasPosition) => void;
 }
 
@@ -91,10 +92,13 @@ export const BaseFlowPath : React.FC<FlowPathProps> = (props) => {
         <g className={`${props.className} ${props.selected ? 'selected': ''}`}>
         
         {generateLine(props.points, (points, ix) => (
-            <FlowPathSegment onMouseDown={(e) => segmentClick(ix, e)} points={points} />
+            <FlowPathSegment 
+                onContextMenu={props.onContextMenu}
+                onMouseDown={(e) => segmentClick(ix, e)} points={points} />
         ))}
         {generateHandles(props.points, (location, ix) => (
             <PathPoint 
+                onContextMenu={props.onContextMenu}
                 onMouseDown={(e) => dragPathPoint(e, ix)}
                 style={{cursor: 'pointer'}}
                 cx={location.x} 
@@ -103,6 +107,7 @@ export const BaseFlowPath : React.FC<FlowPathProps> = (props) => {
         </g>) : (
             <g className={`${props.className} ${props.selected ? 'selected': ''}`}>
             <FlowPathSegment 
+                onContextMenu={props.onContextMenu}
                 onMouseDown={(e) => segmentClick(0, e)} points={props.points} />
                 </g>
     )    
