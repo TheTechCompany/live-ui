@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Button, Text, List } from 'grommet';
 import * as Icons from 'grommet-icons'
 import styled from 'styled-components'
+import { InfiniteCanvasContext } from '../../context/context';
 
 export interface ContextMenuProps {
     x?: number;
@@ -10,7 +11,7 @@ export interface ContextMenuProps {
     menu?: {
         icon?: any;
         label?: any;
-        onClick?: () => void;
+        onClick?: (type: "node" | "path", id: string) => void;
     }[];
 
     open?: boolean;
@@ -19,6 +20,7 @@ export interface ContextMenuProps {
 }
 
 export const BaseContextMenu: React.FC<ContextMenuProps> = (props) => {
+    const context = useContext(InfiniteCanvasContext)
     return !props.open ? null : (
         <Box
             onMouseDown={(e) => e.stopPropagation()}
@@ -37,12 +39,17 @@ export const BaseContextMenu: React.FC<ContextMenuProps> = (props) => {
             <Box className="context-menu__list">
                 {props.menu?.map((datum) => (
                     <Box
-                    round={"xxsmall"}
-                    align="center"
-                    className="context-menu__item"
-                    direction="row">
-                    {datum.icon}
-                    <Text margin="none">{datum.label}</Text>
+                        onClick={() => {
+                            if(context.selected?.type && context.selected.id){
+                                datum.onClick?.(context.selected?.type, context.selected?.id)
+                            }
+                        }}
+                        round={"xxsmall"}
+                        align="center"
+                        className="context-menu__item"
+                        direction="row">
+                        {datum.icon}
+                        <Text margin="none">{datum.label}</Text>
                 </Box>
                 ))}
             </Box>

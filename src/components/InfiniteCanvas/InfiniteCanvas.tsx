@@ -74,7 +74,7 @@ export interface InfiniteCanvasProps {
     contextMenu?: {
         label?: any;
         icon?: any;
-        onClick?: () => void;
+        onClick?: (type: "node" | "path", id: string) => void;
     }[]
 
     zoom?: number;
