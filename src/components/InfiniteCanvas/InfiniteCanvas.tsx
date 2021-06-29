@@ -23,6 +23,8 @@ import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition, Infinit
 import { HMIPosition } from './assets/hmi-spec';
 import { ContextMenu } from './components/context-menu/ContextMenu';
 
+import * as Icons from 'grommet-icons'
+
 export * from './types'
 
 export * from './components/nodes'
@@ -69,6 +71,12 @@ export interface InfiniteCanvasProps {
         y: number
     }
 
+    contextMenu?: {
+        label?: any;
+        icon?: any;
+        onClick?: () => void;
+    }[]
+
     zoom?: number;
 
     onViewportChanged?: (viewport: {zoom: number, offset: {x: number, y: number}}) => void;
@@ -91,7 +99,8 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     className,
     snapToGrid = false,
     grid = {width: 100, height: 100, divisions: 3},
-    children
+    children,
+    contextMenu
 }) => {
 
     const [ menuPos, setMenuPos ] = useState<{x?: number, y?: number}>()
@@ -377,13 +386,17 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         e.stopPropagation()
         e.preventDefault()
 
+        
+    }
+
+    const openContextMenu = (pos: {x: number, y: number}, payload: {type: "node" | "path", id: string}) => {
         let bounds = canvasRef.current?.getBoundingClientRect()
 
-        console.log(e.clientY)
+        onSelect(payload.type, payload.id)
 
         setMenuPos({
-            x: e.clientX - (bounds?.x || 0),
-            y: e.clientY - (bounds?.y || 0)
+            x: pos.x - (bounds?.x || 0),
+            y: pos.y - (bounds?.y || 0)
         })
     }
 
@@ -406,6 +419,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                 zoom: 100 / _zoom,
                 offset: _offset,
                 isPortDragging,
+                openContextMenu: openContextMenu,
                 addPathPoint: (id, ix, point) => {
                     let rp = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, point)
                     onPathsChanged?.(addPathSegment(_paths.current.slice(), id, ix, rp))
@@ -437,7 +451,11 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                 onDrop={_onDrop}
                 className={className}
             >
-                <ContextMenu open={Boolean(menuPos != undefined)} y={menuPos?.y} x={menuPos?.x}/>
+                {(contextMenu || []).length > 0 && <ContextMenu 
+                    menu={contextMenu || []}
+                    open={Boolean(menuPos != undefined)} 
+                    y={menuPos?.y} 
+                    x={menuPos?.x}/>}
                 <GridLayer />
                 <PathLayer />
                 <NodeLayer />

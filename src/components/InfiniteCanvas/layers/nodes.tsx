@@ -31,7 +31,8 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
         offset, 
         nodes = [],
         nodeRefs,
-        setNodeRefs
+        setNodeRefs,
+        openContextMenu
     } = useContext(InfiniteCanvasContext)
 
    console.log(offset)
@@ -164,6 +165,9 @@ export const BaseNodeLayer : React.FC<NodeLayerProps> = ({
             </Popover>*/}
             {nodes && nodes.map((node) => (
                 <div 
+                    onContextMenu={(e) => {
+                        openContextMenu?.({x: e.clientX, y: e.clientY}, {type: 'node', id: node.id})
+                    }}
                     ref={(element) => {
                         itemRefs.current[node.id] = element
                         setNodeRefs?.(itemRefs.current)

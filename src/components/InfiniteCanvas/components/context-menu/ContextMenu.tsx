@@ -7,44 +7,46 @@ export interface ContextMenuProps {
     x?: number;
     y?: number;
 
+    menu?: {
+        icon?: any;
+        label?: any;
+        onClick?: () => void;
+    }[];
+
     open?: boolean;
 
     className?: string;
 }
 
-export const BaseContextMenu : React.FC<ContextMenuProps> = (props) => {
+export const BaseContextMenu: React.FC<ContextMenuProps> = (props) => {
     return !props.open ? null : (
         <Box
+            onMouseDown={(e) => e.stopPropagation()}
             className={props.className}
             background="light-2"
             round="xsmall"
             width="xsmall"
             elevation="small"
-            pad="small"
+            pad="xxsmall"
             style={{
                 zIndex: 20,
                 position: 'absolute',
                 top: props.y,
                 left: props.x
             }}>
-            <List
-                className="context-menu__list"
-                pad="none"
-                data={[
-                    {
-                        icon: <Icons.Edit size="small" />,
-                        label: "Edit"
-                }]}>
-                {(datum: any) => (
-                    <Box 
-                        align="center"
-                        className="context-menu__item" 
-                        direction="row">
-                        {datum.icon}
-                        <Text margin="none">{datum.label}</Text>
-                    </Box>
-                )}
-            </List>
+            <Box className="context-menu__list">
+                {props.menu?.map((datum) => (
+                    <Box
+                    round={"xxsmall"}
+                    align="center"
+                    className="context-menu__item"
+                    direction="row">
+                    {datum.icon}
+                    <Text margin="none">{datum.label}</Text>
+                </Box>
+                ))}
+            </Box>
+
         </Box>
     )
 }

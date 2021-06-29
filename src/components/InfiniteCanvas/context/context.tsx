@@ -37,6 +37,9 @@ export interface IInfiniteCanvasContext {
     addPathPoint?: (path_id: string, ix: number, point: InfiniteCanvasPosition) => void;
     updatePathPoint?: (path_id: string, ix: number, point: InfiniteCanvasPosition) => void;
 
+
+    openContextMenu?: (pos: {x: number, y: number}, payload: {type: "node" | "path", id: string}) => void;
+
     selectNode?: (node: string) => void;
     selectPath?: (path: string) => void;
 
