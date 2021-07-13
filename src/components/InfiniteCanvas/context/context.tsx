@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition } from '../types/canvas';
 import { HMIPosition } from '../assets/hmi-spec';
 import { AbstractWidgetFactory } from '../models/abstract-widget-factory';
@@ -66,3 +66,9 @@ export const InfiniteCanvasContext = React.createContext<IInfiniteCanvasContext>
     io_status: {},
     plant_status: {}
 })
+
+export const useCanvasControls = () => {
+    const { changeZoom } = useContext(InfiniteCanvasContext)
+
+    return changeZoom
+}
