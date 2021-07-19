@@ -24,13 +24,13 @@ export const codeToComponent = (component: string) => {
     const exports : any = {}
     const module = {exports}
 
-    const func = new Function("require", "module", "exports", component);
     try{
+       const func = new Function("require", "module", "exports", component);
+
        func(_requires, module, exports)
        console.timeEnd("Compile component")
        return module.exports;
     }catch(e){
-        console.log("Error", e)
     }
 
 }
@@ -41,7 +41,6 @@ export const rawToCode = (text: string) => {
 
 export const rawToComponent = (text: string) => {
     let code = rawToCode(text)
-    console.log(code)
     if(code != undefined){
         return codeToComponent(code);
     }   

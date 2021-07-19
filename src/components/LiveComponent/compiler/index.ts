@@ -5,9 +5,10 @@ const ReactPreset = require('@babel/preset-react')
 const TypescriptPreset = require('@babel/preset-typescript')
 
 export const compileComponent = (code: string) : string | undefined => {
-    console.time("Compiling..s.")
+    console.time("Compiling...")
     try{
         const result = transform(code, {
+            ast: true,
             filename: 'component.tsx',
             presets: [
                 [EnvPreset, {
@@ -20,6 +21,5 @@ export const compileComponent = (code: string) : string | undefined => {
         console.timeEnd("Compiling...")
         return result.code?.toString();
     }catch(e){
-        console.error("Error compiling code", e)
     }
 }
