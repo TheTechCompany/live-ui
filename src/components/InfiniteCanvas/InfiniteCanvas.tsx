@@ -54,6 +54,13 @@ export interface InfiniteCanvasProps {
     nodes?: InfiniteCanvasNode[],
     paths?: InfiniteCanvasPath[],
 
+    onNodeUpdate?: (node: InfiniteCanvasNode) => void;
+    onNodeRemove?: (node: InfiniteCanvasNode) => void;
+
+    onPathCreate?: (path: InfiniteCanvasPath) => void;
+    onPathUpdate?: (path: InfiniteCanvasPath) => void;
+    onPathRemove?: (path: InfiniteCanvasPath) => void;
+    
     onNodesChanged?: (nodes: InfiniteCanvasNode[]) => void;
     onPathsChanged?: (paths: InfiniteCanvasPath[]) => void;
 
@@ -90,6 +97,8 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     offset,
     assets,
     factories,
+    onNodeUpdate,
+    onNodeRemove,
     onNodesChanged,
     onPathsChanged,
     nodes,
@@ -244,8 +253,10 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         let pos = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, position)
         pos = lockToGrid(pos, snapToGrid || false, grid)
         if(editable && pos){
-            let nodes = moveNode(_nodes || [], node, pos)
-            onNodesChanged?.(nodes)
+            let fNode = (_nodes || []).find((a) => a.id == node)
+            if(!fNode) return;
+            let updatedNode = moveNode(fNode, pos)
+            onNodeUpdate?.(updatedNode)
         }
     }
 
@@ -361,7 +372,8 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         }
 
         nodes[node_ix].ports = ports;
-        onNodesChanged?.(nodes)
+        
+        onNodeUpdate?.(nodes[node_ix])
     }
 
     const onDragOver = (e: React.DragEvent) => {

@@ -1,7 +1,7 @@
 import { throttle } from "lodash"
 import { Ref, RefObject } from "react"
 import { getHostForElement } from "."
-import { InfiniteCanvasPath, InfiniteCanvasPosition } from "../types/canvas"
+import { InfiniteCanvasNode, InfiniteCanvasPath, InfiniteCanvasPosition } from "../types/canvas"
 
 export const addNode = (nodes: any[], node: any) => {
     let n = nodes?.slice()
@@ -9,18 +9,12 @@ export const addNode = (nodes: any[], node: any) => {
     return n
 }
 
-export const moveNode = (nodes: any[], id: string, pos: {x: number, y: number}) => {
-    let n = nodes.slice()
+export const moveNode = (node: InfiniteCanvasNode, pos: {x: number, y: number}) => {
 
-    let ix = n.map((x) => x.id).indexOf(id)
-
-    if(ix > -1){
-        n[ix] = {
-            ...n[ix],
-            ...pos
-        }
-    }
-    return n;
+    return {
+        ...node,
+        ...pos   
+    };
 }
 
 /*
