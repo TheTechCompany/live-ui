@@ -65,43 +65,34 @@ export const getRelativeCanvasPos = (
 //    onPathsChanged?.(p)
 
 
-export const addPathSegment = (paths : InfiniteCanvasPath[], path_id: string, segment_ix: number, point: InfiniteCanvasPosition) => {
-    let p = paths.slice()
-    let path_ix = p.map((x) => x.id).indexOf(path_id)
+export const addPathSegment = (path : InfiniteCanvasPath, segment_ix: number, point: InfiniteCanvasPosition) => {
 
-    console.log(segment_ix)
- 
-
-    if(!p[path_ix].target || segment_ix == 0){
-        p[path_ix].points = [point, ...p[path_ix].points]
+    if(!path.target || segment_ix == 0){
+       path.points = [point, ...path.points]
     }else{
-        p[path_ix].points.splice(segment_ix, 0, point)
+        path.points.splice(segment_ix, 0, point)
     }
     
-    return p;
+    return path;
 
 }
 
-export const updatePathSegment = (paths: InfiniteCanvasPath[], path_id: string, ix: number, point: InfiniteCanvasPosition) => {
+export const updatePathSegment = (path: InfiniteCanvasPath, ix: number, point: InfiniteCanvasPosition) => {
 
-    let p = paths.slice();
-    let path_ix = p.map((x) => x.id).indexOf(path_id)
-    p[path_ix].points[ix] = point;
+ 
+    path.points[ix] = point;
 
-    return p;
+    return path
 }
 
-export const linkPath = (paths: InfiniteCanvasPath[], path_id: string, nodeId: string, handleId: string) => {
-    let p = paths.slice();
-    let path_ix = p.map((x) => x.id).indexOf(path_id)
+export const linkPath = (path: InfiniteCanvasPath, nodeId: string, handleId: string) => {
+    
+        path.points.splice(path.points.length -1, 1) //TODO make safe for relinking
+        path.target = nodeId;
+        path.targetHandle = handleId;
+    
 
-    if(path_ix > -1){
-        p[path_ix].points.splice(p[path_ix].points.length -1, 1) //TODO make safe for relinking
-        p[path_ix].target = nodeId;
-        p[path_ix].targetHandle = handleId;
-    }
-
-    return p;
+    return path;
 }
 
 

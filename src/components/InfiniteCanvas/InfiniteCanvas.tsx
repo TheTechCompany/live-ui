@@ -101,6 +101,9 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     onNodeRemove,
     onNodesChanged,
     onPathsChanged,
+    onPathCreate,
+    onPathUpdate,
+    onPathRemove,
     nodes,
     paths,
     onDrop,
@@ -283,13 +286,15 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
             let p : any[] = _paths?.current?.slice() || [];
             p.push(path)
 
-            onPathsChanged?.(p)
+            onPathCreate?.(path)
 
 
     const updatePathPosition = throttle((point: InfiniteCanvasPosition) => {
       
         let p = _paths?.current?.slice() || [];
         let ix = p.map((x: any) => x.id).indexOf(id)
+
+        let path;
 
             point = lockToGrid(point, snapToGrid || false, grid)
   
@@ -298,22 +303,22 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
             ]
             if(ix > -1){
                 console.log("Updating", id)
-                p[ix] = {
+                path = {
                     ...p[ix],
                     points: _points
                 }                    
 
             }else{
                 console.log("creating", id)
-                p.push({
+               path = {
                     id,
                     source: nodeId,
                     sourceHandle: handleId,
                     target: null,
                     points: _points
-                } as any)
+                } as any
             }
-            onPathsChanged?.(p)
+            onPathUpdate?.(path)
 
     }, 100)
 
@@ -329,7 +334,11 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                     let nodeId = target.getAttribute('data-nodeid') || ''
                     let handleId = target.getAttribute('data-handleid') || ''
 
-                    onPathsChanged?.(linkPath(_paths.current, path.id, nodeId, handleId))
+                    let current_path = _paths.current.find((a) => a.id == path.id)
+                    if(!current_path) return;
+                    onPathUpdate?.(linkPath(current_path, nodeId, handleId))
+
+          //  onPathsChanged?.(linkPath(_paths.current, path.id, nodeId, handleId))
                 }
             }
         })
@@ -372,7 +381,7 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         }
 
         nodes[node_ix].ports = ports;
-        
+
         onNodeUpdate?.(nodes[node_ix])
     }
 
@@ -434,15 +443,24 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                 openContextMenu: openContextMenu,
                 addPathPoint: (id, ix, point) => {
                     let rp = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, point)
-                    onPathsChanged?.(addPathSegment(_paths.current.slice(), id, ix, rp))
+                    
+                    let current_path = _paths.current.find((a) => a.id == id)
+                    if(!current_path) return;
+                    onPathUpdate?.(addPathSegment(current_path, ix, rp))
                 },
                 updatePathPoint: (id, ix, point) => {
                     let rp = getRelativeCanvasPos(canvasRef, {offset: _offset, zoom: _zoom}, point)
                     rp = lockToGrid(rp, snapToGrid, grid)
-                    onPathsChanged?.(updatePathSegment(_paths.current.slice(), id, ix, rp))
+
+                    let current_path = _paths.current.find((a) => a.id == id)
+                    if(!current_path) return;
+                    onPathUpdate?.(updatePathSegment(current_path, ix, rp))
+
                 },
                 linkPath: (id, node, handle) => {
-                    onPathsChanged?.(linkPath(_paths.current.slice(), id, node, handle))
+                    let current_path = _paths.current.find((a) => a.id == id)
+                    if(!current_path) return;
+                    onPathUpdate?.(linkPath(current_path, node, handle))
                 },
                 setNodeRefs,
                 dragPort: dragPort,
