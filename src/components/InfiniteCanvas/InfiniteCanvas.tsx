@@ -495,8 +495,12 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                     rp = lockToGrid(rp, snapToGrid, grid)
 
                     let current_path = _paths.current.find((a) => a.id == id)
+
                     if(!current_path) return;
-                    onPathUpdate?.(updatePathSegment(current_path, ix, rp))
+                    
+                    let updated = updatePathSegment(Object.assign({}, current_path), ix, rp);
+                    console.log("Updated", updated)
+                    onPathUpdate?.(updated)
 
                 },
                 linkPath: (id, node, handle) => {

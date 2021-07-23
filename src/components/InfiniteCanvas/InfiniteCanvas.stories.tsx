@@ -54,7 +54,7 @@ const ControlledTemplate : Story<InfiniteCanvasProps> = (args) => {
         // setPaths(paths)
       }}
       onPathUpdate={(path) => {
-        console.log('onPathUpdate', paths)
+        console.log('onPathUpdate', path)
           let p = pathRef.current.slice()
           let p_ix = p.map((x) => x.id).indexOf(path.id)
 
@@ -173,11 +173,9 @@ Controlled.args = {
   paths: [
     {
       id: '2',
-      points: [],
+      points: [{x: 100, y: 100}],
       source: '1',
-      sourceHandle: 'inlet',
-      target: '2',
-      targetHandle: 'inlet'
+      sourceHandle: 'inlet'
     }
   ]
 };

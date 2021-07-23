@@ -78,11 +78,16 @@ export const addPathSegment = (path : InfiniteCanvasPath, segment_ix: number, po
 }
 
 export const updatePathSegment = (path: InfiniteCanvasPath, ix: number, point: InfiniteCanvasPosition) => {
+    let p = Object.assign({}, path)
 
- 
-    path.points[ix] = point;
+    let points = p.points.slice();
 
-    return path
+   console.log(path, ix, point)
+    points[ix] = point;
+
+    p.points = points;
+    console.log(p.points)
+    return p
 }
 
 export const linkPath = (path: InfiniteCanvasPath, nodeId: string, handleId: string) => {
