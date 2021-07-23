@@ -22,20 +22,23 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
 
 
     useEffect(() => {
-        if(context.paths && context.nodes){
+        if(context.paths && context.nodes && context.ports){
+
+            console.log(context.ports)
+            
             let p = context.paths.map((x) => {
                 let points = x.points || [];
             
                 if(x.sourceHandle){
                     let node = context.nodes?.find((a) => a.id == x.source)
-                    let port = node?.ports?.find((a) => a.name == x.sourceHandle)
+                    let port = context?.ports?.[`${x.source}:${x.sourceHandle}`]
 
                     if(port && node){
 
                         
                         let point = {
-                            x: (node?.x || 0) + (port?.position?.x || 0) + ((port.position?.width || 0) / 2),
-                            y: (node?.y || 0) + (port?.position?.y || 0) + ((port.position?.height || 0) /2)
+                            x: (node?.x || 0) + (port?.relativeX || 0) + ((port.width || 0) / 2),
+                            y: (node?.y || 0) + (port?.relativeY || 0) + ((port.height || 0) /2)
                         }
                         points = [point, ...(points || [])]
                     }
@@ -43,11 +46,12 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
 
                 if(x.targetHandle){
                     let node = context.nodes?.find((a) => a.id == x.target)
-                    let port = node?.ports?.find((a) => a.name == x.targetHandle)
+                    let port = context?.ports?.[`${x.target}:${x.targetHandle}`]
+
                     if(port && node){
                         let point = {
-                            x: (node?.x || 0)+ (port?.position?.x || 0) + ((port.position?.width || 0) / 2),
-                            y: (node?.y || 0) +(port?.position?.y || 0)+ ((port.position?.height || 0) /2)
+                            x: (node?.x || 0)+ (port?.relativeX || 0) + ((port.width || 0) / 2),
+                            y: (node?.y || 0) +(port?.relativeY || 0)+ ((port.height || 0) /2)
                         }
                         points = [...(points || []), point]
                     }
@@ -62,7 +66,7 @@ export const PathLayer : React.FC<PathLayerProps> = (props) => {
 
             setPaths(p)
         }
-    }, [context.paths, context.nodes])
+    }, [context.paths, context.nodes, context.ports])
 
 
     const runs = [

@@ -27,7 +27,9 @@ export interface IInfiniteCanvasContext {
     darkMode?: boolean;
 
     nodeRefs?: {[key: string]: any}
+
     ports?: {[key: string]: any}
+
     setPorts?: (ports: {[key: string]: any}) => void;
     setNodeRefs?: (nodeRefs: {[key: string]: any}) => void;
     dragPort?: (e: React.MouseEvent, handleId?: string, nodeId?: string) => void;

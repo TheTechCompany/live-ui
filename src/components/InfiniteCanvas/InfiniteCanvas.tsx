@@ -115,6 +115,29 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
     contextMenu
 }) => {
 
+    const [ ports, _setPorts ] = useState<{[key: string]: {
+        relativeX: number;
+        relativeY: number;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    } }>({})
+
+    const portRef = useRef<{[key: string]: {
+        relativeX: number;
+        relativeY: number;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    } }>({})
+
+    const setPorts = (ports: any) => {
+        portRef.current = ports;
+        _setPorts(ports)
+    }
+
     const [ menuPos, setMenuPos ] = useState<{x?: number, y?: number}>()
 
     const canvasRef = useRef<HTMLDivElement>(null)
@@ -357,32 +380,49 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
         let nodes : any[] = _nodes?.slice() || [];
 
         let node = _nodes?.find((a) => a.id == opts.nodeId) || {x: 0, y: 0, ports: []}
+
         let node_ix = (_nodes?.map((x) => x.id) || []).indexOf(opts.nodeId)
-        let ports = node?.ports?.slice();
 
-        let port_ix = ports?.map((x: any) => x.name).indexOf(opts.handleId) 
-        
+        let _ports = Object.assign({}, portRef.current);
 
-        if(port_ix != undefined && port_ix > -1 && ports){
-
-            ports[port_ix] = {
-                ...(ports?.[port_ix] || {}),
-                position: {
-                    x: point.x - node.x,
-                    y: point.y - node.y,
-                    width: opts.position.width,
-                    height: opts.position.height
-                },
-                bounds: {
-                    ...opts.position
-                }
-            } as any
-
+        _ports[`${opts.nodeId}:${opts.handleId}`] = {
+            relativeX: point.x - node.x,
+            relativeY: point.y - node.y,
+            x: opts.position.x,
+            y: opts.position.y,
+            width: opts.position.width,
+            height: opts.position.height
         }
 
-        nodes[node_ix].ports = ports;
+        setPorts(_ports)
 
-        onNodeUpdate?.(nodes[node_ix])
+        // let ports = node?.ports?.slice();
+
+        // let port_ix = ports?.map((x: any) => x.name).indexOf(opts.handleId) 
+        
+
+
+
+        // if(port_ix != undefined && port_ix > -1 && ports){
+
+        //     ports[port_ix] = {
+        //         ...(ports?.[port_ix] || {}),
+        //         position: {
+        //             x: point.x - node.x,
+        //             y: point.y - node.y,
+        //             width: opts.position.width,
+        //             height: opts.position.height
+        //         },
+        //         bounds: {
+        //             ...opts.position
+        //         }
+        //     } as any
+
+        // }
+
+        // nodes[node_ix].ports = ports;
+
+        // onNodeUpdate?.(nodes[node_ix])
     }
 
     const onDragOver = (e: React.DragEvent) => {
@@ -433,6 +473,8 @@ export const BaseInfiniteCanvas: React.FC<InfiniteCanvasProps> = ({
                 factories: _factories,
                 nodes: _nodes,
                 paths: _paths.current,
+                ports: ports,
+
                 assets: assets,
                 nodeRefs,
 

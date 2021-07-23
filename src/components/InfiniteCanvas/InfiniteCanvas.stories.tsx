@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 //import useState from 'storybook-addon-state'
 import { Story, Meta, storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions'
@@ -16,21 +16,54 @@ const ControlledTemplate : Story<InfiniteCanvasProps> = (args) => {
 
   return ((props) => {
     const [ nodes, setNodes ] = useState(args.nodes || [])
-    const [ paths, setPaths ] = useState(args.paths || [])
+    const pathRef = useRef<any[]>(args.paths || [])
+    const [ paths, _setPaths ] = useState(args.paths || []) //args.paths
   
+    const setPaths = (items: any[]) => {
+      pathRef.current = items;
+      _setPaths(items)
+    }
+
     return (
     <InfiniteCanvas 
 
      {...args}
       nodes={nodes}
-      paths={paths}
-      onNodesChanged={(nodes) => {
+      paths={pathRef.current}
+      onNodeUpdate={(node) => {
         action("onNodesChanged")
-        setNodes(nodes)
+        let p = nodes.slice()
+        let p_ix = p.map((x) => x.id).indexOf(node.id)
+
+        p[p_ix] = {
+          ...p[p_ix],
+          ...node
+        }
+
+        setNodes(p)
+        //setNodes(nodes)
       }}
-      onPathsChanged={(paths) => {
-        action('onPathsChanged')
-        setPaths(paths)
+      onPathCreate={(path) => {
+        console.log('onPathCreate')
+
+        let p = pathRef.current.slice()
+        p.push(path)
+        setPaths(p)
+        console.log(p)
+        // action('onPathsChanged')
+        // setPaths(paths)
+      }}
+      onPathUpdate={(path) => {
+        console.log('onPathUpdate', paths)
+          let p = pathRef.current.slice()
+          let p_ix = p.map((x) => x.id).indexOf(path.id)
+
+          p[p_ix] = {
+            ...p[p_ix],
+            ...path
+          }
+
+          setPaths(p)
       }}>
 
     <ZoomControls anchor={{horizontal: 'right', vertical: 'bottom'}} />
@@ -140,7 +173,7 @@ Controlled.args = {
   paths: [
     {
       id: '2',
-      points: [{x: 100, y: 70}, {x: 200, y: 80}],
+      points: [],
       source: '1',
       sourceHandle: 'inlet',
       target: '2',
